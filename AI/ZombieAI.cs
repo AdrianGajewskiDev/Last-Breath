@@ -2,16 +2,18 @@
 using UnityStandardAssets.Characters.FirstPerson;
 using Random = UnityEngine.Random;
 
-[RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
 public class ZombieAI : AI
 {
-
+    [Header("Locomotion")]
     public float WalkSpeed;
     public float RunningSpeed;
     float Speed;
 
-    Rigidbody rBody;
+    [Header("FOV")]
+    public float Angle;
+    public float Radius;
+
     Animator animator;
 
     enum ZombieState
@@ -32,42 +34,53 @@ public class ZombieAI : AI
 
     private void Awake()
     {
-        rBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>();
     }
 
     private void OnDrawGizmos()
     {
-        DrawGizmos(this.gameObject.transform, 5,40);
+        DrawGizmos(this.gameObject.transform, Radius, Angle);
     }
 
     private void Update()
     {
-       player = ScanForTarget<FirstPersonController>(this.gameObject.transform,layerMask, 5, 40);
+        player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
 
         if (player != null)
-            RotateToTarget(this.gameObject.transform, player, 3f);
+            RotateToTarget(this.gameObject.transform, player.transform.Find("LookAtTarget"), 3f);
 
         SetState();
+        Move();
     }
 
     void SetState()
     {
         if (player != null)
         {
-            Speed = WalkSpeed;
 
-            var behaviour = Random.Range(0, 2);
+            if (animator.GetBool("IsWalking") == true || animator.GetBool("IsRunning") == true)
+                return;
+            else
+            {
 
-            Debug.Log(behaviour);
+                var behaviour = Random.Range(0, 2);
 
-            if (behaviour == 0)
-                state = ZombieState.Walking;
+                //Random zombie behavior so it's not the same every time
+                if (behaviour == 0)
+                {
+                    Speed = WalkSpeed;
+                    state = ZombieState.Walking;
+                }
 
-            if (behaviour == 1)
-                state = ZombieState.Running;    
+                if (behaviour == 1)
+                {
+                    Speed = RunningSpeed;
+                    state = ZombieState.Running;
+                }
 
-            PlayAnimation(state);
+                PlayAnimation(state);
+            }
+            
         }
         else
         {
@@ -76,13 +89,11 @@ public class ZombieAI : AI
             PlayAnimation(state);
         }
 
-        Debug.Log(player);
-        Debug.Log(Speed);
     }
 
     void PlayAnimation(ZombieState state)
     {
-        switch(state)
+        switch (state)
         {
             case ZombieState.Idle:
                 {
@@ -106,5 +117,11 @@ public class ZombieAI : AI
         }
     }
 
-    
+    void Move()
+    {
+        if (player == null)
+            return;
+
+        transform.position += transform.forward * Speed * Time.deltaTime;
+    }
 }

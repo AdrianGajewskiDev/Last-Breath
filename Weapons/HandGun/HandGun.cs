@@ -15,6 +15,20 @@ public class HandGun : Weapon
 
     private void HandleShooting(RaycastHit hit)
     {
+        var zombie = hit.transform.GetComponent<ZombieHealth>();
+
+
+        if(zombie != null)
+        {
+            Debug.Log(zombie);
+
+            zombie.OnHit += (animator) =>
+            {
+                animator.SetBool("GetHit", true);
+            };
+
+            zombie.GiveDamage(Damage);
+        }
     }
 
     void Update()

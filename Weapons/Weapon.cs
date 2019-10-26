@@ -24,7 +24,6 @@ public class Weapon : MonoBehaviour
         RaycastHit hit;
 
         var direction = camera.transform.forward;
-
         AudioSource.PlayOneShot(gunShotSound);
 
         if (Physics.Raycast(gameObject.transform.position, direction, out hit, range))
