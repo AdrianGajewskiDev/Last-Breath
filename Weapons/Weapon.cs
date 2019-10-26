@@ -9,6 +9,8 @@ public class Weapon : MonoBehaviour
     public float rateOfFire;
     public float range;
 
+    public Crosshair Crosshair;
+
     protected Camera camera;
     protected bool canFIre;
 
