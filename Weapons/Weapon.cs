@@ -2,16 +2,18 @@
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] int Damage;
-    [SerializeField] int ClipSize;
-    [SerializeField] int CurrentAmmoInClip;
+    public int Damage;
+    public int ClipSize;
+    public int CurrentAmmoInClip;
 
-    [SerializeField] float rateOfFire;
-    [SerializeField] float range;
+    public float rateOfFire;
+    public float range;
 
     protected Camera camera;
+    protected bool canFIre;
 
-    bool canFIre;
+    [HideInInspector]public AudioSource AudioSource;
+    [SerializeField] AudioClip gunShotSound;
 
     public event System.Action<RaycastHit> OnShot;
 
@@ -21,6 +23,7 @@ public class Weapon : MonoBehaviour
 
         var direction = camera.transform.forward;
 
+        AudioSource.PlayOneShot(gunShotSound);
 
         if (Physics.Raycast(gameObject.transform.position, direction, out hit, range))
         {

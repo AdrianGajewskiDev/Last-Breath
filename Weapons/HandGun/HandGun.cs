@@ -1,21 +1,30 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(AudioSource))]
 public class HandGun : Weapon
 {
-
+    float timeToFireAllowed;
+    
     private void Awake()
     {
         camera = Camera.main;
+        AudioSource = GetComponent<AudioSource>();
+
         OnShot += HandleShooting;
     }
 
-    private void HandleShooting(RaycastHit obj)
+    private void HandleShooting(RaycastHit hit)
     {
-        throw new System.NotImplementedException();
     }
 
     void Update()
     {
-        Shot();        
+        canFIre = InputController.LeftMouse;
+
+        if (canFIre && Time.time >= timeToFireAllowed)
+        {
+            timeToFireAllowed = Time.time + 1 / rateOfFire;
+            Shot();        
+        }
     }
 }
