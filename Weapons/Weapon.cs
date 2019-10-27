@@ -15,9 +15,11 @@ public class Weapon : MonoBehaviour
 
     [HideInInspector]public AudioSource AudioSource;
     [SerializeField] AudioClip gunShotSound;
-    public  ParticleSystem[] vfx; 
+    public  ParticleSystem[] vfx;
 
     public event System.Action<RaycastHit> OnShot;
+
+    [HideInInspector]public Animation animation;
 
     public virtual void Shot() 
     {

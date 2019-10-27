@@ -26,8 +26,7 @@ public class ZombieAI : AI
         Walking,
         Running,
         Attacking,
-        Patrolling,
-        GetHit
+        Patrolling
     }
 
     ZombieState state;
@@ -66,9 +65,8 @@ public class ZombieAI : AI
 
     void CheckForPotentialTarget(Transform target)
     {
-        if (IsInLineOfSight(gameObject.transform, target, Angle, Radius, layerMask) || player != null)
+        if (IsInLineOfSight(target, this.gameObject.transform, Angle, Radius, layerMask) || player != null)
             return;
-
         var distance = Vector3.Distance(gameObject.transform.position, target.position);
 
         if (distance <= Radius && playerWeaponSounds.isPlaying)

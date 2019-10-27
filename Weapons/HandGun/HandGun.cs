@@ -10,14 +10,13 @@ public class HandGun : Weapon
     {
         camera = Camera.main;
         AudioSource = GetComponent<AudioSource>();
-
+        animation = GetComponentInParent<Animation>();
         OnShot += HandleShooting;
     }
 
     private void HandleShooting(RaycastHit hit)
     {
         var zombie = hit.transform.GetComponentInParent<ZombieHealth>();
-
 
         if (zombie != null)
         {
@@ -42,8 +41,10 @@ public class HandGun : Weapon
 
         if (canFIre && Time.time >= timeToFireAllowed)
         {
+            vfx[1].Play();
             timeToFireAllowed = Time.time + 1 / rateOfFire;
-            Shot();        
+            animation.Play("HandGunRecoil");
+            Shot();     
         }
 
         DestroyParticles();
