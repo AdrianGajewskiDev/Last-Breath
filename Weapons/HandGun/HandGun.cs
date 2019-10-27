@@ -16,13 +16,18 @@ public class HandGun : Weapon
 
     private void HandleShooting(RaycastHit hit)
     {
-        var zombie = hit.transform.GetComponent<ZombieHealth>();
+        var zombie = hit.transform.GetComponentInParent<ZombieHealth>();
 
 
         if (zombie != null)
         {
+            if (hit.transform.CompareTag("ZombieHead"))
+                zombie.GiveDamage(Damage * 2);
+            else
+                zombie.GiveDamage(Damage);
+
             Instantiate(vfx[0], hit.point, Quaternion.identity);
-            zombie.GiveDamage(Damage);
+
         }
     }
 
@@ -40,5 +45,7 @@ public class HandGun : Weapon
             timeToFireAllowed = Time.time + 1 / rateOfFire;
             Shot();        
         }
+
+        DestroyParticles();
     }
 }

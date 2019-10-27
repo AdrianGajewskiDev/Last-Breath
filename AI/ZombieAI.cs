@@ -16,7 +16,9 @@ public class ZombieAI : AI
 
     Animator animator;
 
-    public bool GetHit = false;
+    public AudioSource playerWeaponSounds;
+
+    Rigidbody[] ragdolls;
 
     enum ZombieState
     {
@@ -31,13 +33,17 @@ public class ZombieAI : AI
     ZombieState state;
 
     Transform player;
-
+    Transform localPlayer;
+    
     LayerMask layerMask;
 
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        ragdolls = GetComponentsInChildren<Rigidbody>();
+        localPlayer = GameObject.FindGameObjectWithTag("Player").transform;
+        DisableRagdoll();
     }
 
     private void OnDrawGizmos()
@@ -49,13 +55,24 @@ public class ZombieAI : AI
     {
         player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
 
+        CheckForPotentialTarget(localPlayer);
+
         if (player != null)
             RotateToTarget(this.gameObject.transform, player.transform.Find("LookAtTarget"), 3f);
 
         SetState();
+        Move();
+    }
 
-        if(GetHit == false)
-            Move();
+    void CheckForPotentialTarget(Transform target)
+    {
+        if (IsInLineOfSight(gameObject.transform, target, Angle, Radius, layerMask) || player != null)
+            return;
+
+        var distance = Vector3.Distance(gameObject.transform.position, target.position);
+
+        if (distance <= Radius && playerWeaponSounds.isPlaying)
+            player = target;
     }
 
     void SetState()
@@ -126,5 +143,13 @@ public class ZombieAI : AI
             return;
 
         transform.position += transform.forward * Speed * Time.deltaTime;
+    }
+
+    void DisableRagdoll()
+    {
+        foreach (var rbody in ragdolls)
+        {
+            rbody.isKinematic = true;
+        }
     }
 }
