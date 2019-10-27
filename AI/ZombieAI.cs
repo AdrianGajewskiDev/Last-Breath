@@ -8,7 +8,7 @@ public class ZombieAI : AI
     [Header("Locomotion")]
     public float WalkSpeed;
     public float RunningSpeed;
-    float Speed;
+    [HideInInspector]public float Speed;
 
     [Header("FOV")]
     public float Angle;
@@ -16,13 +16,16 @@ public class ZombieAI : AI
 
     Animator animator;
 
+    public bool GetHit = false;
+
     enum ZombieState
     {
         Idle,
         Walking,
         Running,
         Attacking,
-        Patrolling
+        Patrolling,
+        GetHit
     }
 
     ZombieState state;
@@ -50,7 +53,9 @@ public class ZombieAI : AI
             RotateToTarget(this.gameObject.transform, player.transform.Find("LookAtTarget"), 3f);
 
         SetState();
-        Move();
+
+        if(GetHit == false)
+            Move();
     }
 
     void SetState()
@@ -80,7 +85,6 @@ public class ZombieAI : AI
 
                 PlayAnimation(state);
             }
-            
         }
         else
         {
@@ -88,7 +92,6 @@ public class ZombieAI : AI
             state = ZombieState.Idle;
             PlayAnimation(state);
         }
-
     }
 
     void PlayAnimation(ZombieState state)

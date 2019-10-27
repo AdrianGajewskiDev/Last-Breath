@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public class HandGun : Weapon
@@ -18,17 +19,16 @@ public class HandGun : Weapon
         var zombie = hit.transform.GetComponent<ZombieHealth>();
 
 
-        if(zombie != null)
+        if (zombie != null)
         {
-            Debug.Log(zombie);
-
-            zombie.OnHit += (animator) =>
-            {
-                animator.SetBool("GetHit", true);
-            };
-
+            Instantiate(vfx[0], hit.point, Quaternion.identity);
             zombie.GiveDamage(Damage);
         }
+    }
+
+    void DestroyParticles()
+    {
+        Destroy(GameObject.Find("Blood(Clone)"),1);
     }
 
     void Update()

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
 public class Crosshair : MonoBehaviour
 {
     [SerializeField] Texture2D crosshairTexture;
@@ -8,17 +6,12 @@ public class Crosshair : MonoBehaviour
     [SerializeField] float width;
     [SerializeField] float height;
 
-    private void Awake()
-    {
-    }
-
+   
     private void OnGUI()
     {
-        var x = Screen.width / 2;
-        var y = Screen.height / 2;
+        var x = (Screen.width / 2) - (width / 2);
+        var y = (Screen.height / 2) - (height / 2);
 
         GUI.DrawTexture(new Rect(x,y, width,height),crosshairTexture);
     }
-
-   
 }

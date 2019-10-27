@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
@@ -9,13 +10,12 @@ public class Weapon : MonoBehaviour
     public float rateOfFire;
     public float range;
 
-    public Crosshair Crosshair;
-
     protected Camera camera;
     protected bool canFIre;
 
     [HideInInspector]public AudioSource AudioSource;
     [SerializeField] AudioClip gunShotSound;
+    public  ParticleSystem[] vfx; 
 
     public event System.Action<RaycastHit> OnShot;
 
@@ -24,9 +24,10 @@ public class Weapon : MonoBehaviour
         RaycastHit hit;
 
         var direction = camera.transform.forward;
+
         AudioSource.PlayOneShot(gunShotSound);
 
-        if (Physics.Raycast(gameObject.transform.position, direction, out hit, range))
+        if (Physics.Raycast(camera.transform.position, direction, out hit, range))
         {
             OnShot?.Invoke(hit);
         }

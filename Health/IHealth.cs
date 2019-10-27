@@ -2,4 +2,6 @@
 {
     void GiveDamage(int ammount);
     void Die();
+
+    bool IsDead();
 }

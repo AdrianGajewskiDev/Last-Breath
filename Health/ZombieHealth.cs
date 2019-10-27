@@ -1,18 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ZombieHealt : MonoBehaviour
+public class ZombieHealth : MonoBehaviour, IHealth
 {
-    // Start is called before the first frame update
-    void Start()
+    public float MaxHealth;
+
+    public float currentHealth;
+
+    Animator animator;
+
+    public event System.Action OnHit;
+
+    private void Awake()
     {
-        
+        currentHealth = MaxHealth;
+        animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public bool IsDead() => currentHealth <= 0;
+
+    public void Die()
     {
-        
+        if(IsDead())
+        {
+            animator.SetBool("Died", true);
+            GetComponent<ZombieAI>().enabled = false;
+            Destroy(gameObject, 5);
+        }
+    }
+
+    private void Update()
+    {
+        Die();
+    }
+
+    public void GiveDamage(int ammount)
+    {
+        currentHealth -= ammount;
+        OnHit?.Invoke();
     }
 }
