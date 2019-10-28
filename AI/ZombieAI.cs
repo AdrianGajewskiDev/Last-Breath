@@ -63,6 +63,7 @@ public class ZombieAI : AI
         Move();
     }
 
+    //Check if zombie dont see player but can hear him
     void CheckForPotentialTarget(Transform target)
     {
         if (IsInLineOfSight(target, this.gameObject.transform, Angle, Radius, layerMask) || player != null)
