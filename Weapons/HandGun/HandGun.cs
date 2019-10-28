@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 [RequireComponent(typeof(AudioSource))]
 public class HandGun : Weapon
@@ -10,7 +11,8 @@ public class HandGun : Weapon
     {
         camera = Camera.main;
         AudioSource = GetComponent<AudioSource>();
-        animation = GetComponentInParent<Animation>();
+        animator = GetComponentInParent<Animator>();
+        CurrentWeaponPosition = this.gameObject.transform.parent.position;
         OnShot += HandleShooting;
     }
 
@@ -35,6 +37,11 @@ public class HandGun : Weapon
         Destroy(GameObject.Find("Blood(Clone)"),1);
     }
 
+    public override void Aim()
+    {
+        animator.SetBool("IsAiming", InputController.RightMouse);
+    }
+
     void Update()
     {
         canFIre = InputController.LeftMouse;
@@ -42,11 +49,14 @@ public class HandGun : Weapon
         if (canFIre && Time.time >= timeToFireAllowed)
         {
             vfx[1].Play();
+            vfx[2].Play();
             timeToFireAllowed = Time.time + 1 / rateOfFire;
-            animation.Play("HandGunRecoil");
             Shot();     
         }
 
+        animator.SetBool("IsShooting", canFIre);
+        animator.SetBool("IsRunning", !FirstPersonController.IsWalking);
+        Aim();
         DestroyParticles();
     }
 }

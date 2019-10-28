@@ -19,7 +19,10 @@ public class Weapon : MonoBehaviour
 
     public event System.Action<RaycastHit> OnShot;
 
-    [HideInInspector]public Animation animation;
+    [HideInInspector]public Animator animator;
+
+    public Vector3 AimPosition;
+    public Vector3 CurrentWeaponPosition;
 
     public virtual void Shot() 
     {
@@ -34,4 +37,6 @@ public class Weapon : MonoBehaviour
             OnShot?.Invoke(hit);
         }
     }
+
+    public virtual void Aim() { }
 }

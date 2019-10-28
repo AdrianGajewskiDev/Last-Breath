@@ -17,6 +17,7 @@ public class ZombieAI : AI
     Animator animator;
 
     public AudioSource playerWeaponSounds;
+    public LayerMask layerMask;
 
     Rigidbody[] ragdolls;
 
@@ -34,7 +35,6 @@ public class ZombieAI : AI
     Transform player;
     Transform localPlayer;
     
-    LayerMask layerMask;
 
 
     private void Awake()
