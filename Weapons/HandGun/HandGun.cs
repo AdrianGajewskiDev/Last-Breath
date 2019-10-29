@@ -27,14 +27,17 @@ public class HandGun : Weapon
             else
                 zombie.GiveDamage(Damage);
 
-            Instantiate(vfx[0], hit.point, Quaternion.identity);
-
+            if (zombie.transform.CompareTag("Zombie"))
+                Instantiate(vfx[0], hit.point, Quaternion.identity);
         }
+        else
+            Instantiate(vfx[3], hit.point, Quaternion.identity);
     }
 
     void DestroyParticles()
     {
         Destroy(GameObject.Find("Blood(Clone)"),1);
+        Destroy(GameObject.Find("BulletImpact(Clone)"),1);
     }
 
     public override void Aim()
@@ -44,16 +47,13 @@ public class HandGun : Weapon
 
     void Update()
     {
-        canFIre = InputController.LeftMouse;
-
-        if (canFIre && Time.time >= timeToFireAllowed)
+        if(CheckIfCanFire(ref timeToFireAllowed, rateOfFire))
         {
             vfx[1].Play();
             vfx[2].Play();
-            timeToFireAllowed = Time.time + 1 / rateOfFire;
             Shot();     
         }
-
+        
         animator.SetBool("IsShooting", canFIre);
         animator.SetBool("IsRunning", !FirstPersonController.IsWalking);
         Aim();

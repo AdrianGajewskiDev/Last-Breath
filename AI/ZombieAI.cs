@@ -21,6 +21,10 @@ public class ZombieAI : AI
 
     Rigidbody[] ragdolls;
 
+    [Header("Stats")]
+    public int Damage;
+
+
     enum ZombieState
     {
         Idle,
@@ -61,9 +65,10 @@ public class ZombieAI : AI
 
         SetState();
         Move();
+        AttackPlayer();
     }
 
-    //Check if zombie dont see player but can hear him
+    //Check if zombie don't see player but can hear him
     void CheckForPotentialTarget(Transform target)
     {
         if (IsInLineOfSight(target, this.gameObject.transform, Angle, Radius, layerMask) || player != null)
@@ -150,5 +155,35 @@ public class ZombieAI : AI
         {
             rbody.isKinematic = true;
         }
+    }
+
+    void AttackPlayer()
+    {
+        if (player == null)
+            return;
+
+        var distanceToPlayer = Vector3.Distance(gameObject.transform.position, player.transform.position);
+
+
+        if (distanceToPlayer <= 2f)
+        {
+            Speed = 0;
+            animator.SetBool("Attack", true);
+        }
+        else
+        {
+            if (state == ZombieState.Walking)
+                Speed = WalkSpeed;
+            else
+                Speed = RunningSpeed;
+
+            animator.SetBool("Attack", false);
+        }
+
+    }
+
+    public void GiveDamageToPlayer()
+    {
+        player.GetComponent<PlayerHealth>().GiveDamage(Damage);
     }
 }

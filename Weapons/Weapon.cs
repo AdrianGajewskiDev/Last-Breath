@@ -38,5 +38,17 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    public virtual bool CheckIfCanFire(ref float nextFireAllowed, float rateOfFire)
+    {
+        canFIre = InputController.LeftMouse;
+
+        if (canFIre && Time.time >= nextFireAllowed)
+        {
+            nextFireAllowed = Time.time + 1 / rateOfFire;
+            return true;
+        }
+        else
+            return false;
+    }
     public virtual void Aim() { }
 }
