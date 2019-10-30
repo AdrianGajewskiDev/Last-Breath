@@ -8,7 +8,7 @@ public class ZombieAI : AI
     [Header("Locomotion")]
     public float WalkSpeed;
     public float RunningSpeed;
-    [HideInInspector]public float Speed;
+    [HideInInspector] public float Speed;
 
     [Header("FOV")]
     public float Angle;
@@ -38,7 +38,7 @@ public class ZombieAI : AI
 
     Transform player;
     Transform localPlayer;
-    
+
 
 
     private void Awake()
@@ -184,6 +184,6 @@ public class ZombieAI : AI
 
     public void GiveDamageToPlayer()
     {
-        player.GetComponent<PlayerHealth>().GiveDamage(Damage);
+        player.GetComponent<IHealth>().GiveDamage(Damage);
     }
 }

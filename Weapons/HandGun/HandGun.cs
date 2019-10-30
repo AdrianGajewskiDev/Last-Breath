@@ -31,7 +31,11 @@ public class HandGun : Weapon
                 Instantiate(vfx[0], hit.point, Quaternion.identity);
         }
         else
-            Instantiate(vfx[3], hit.point, Quaternion.identity);
+        {
+            if(hit.point != null)
+                Instantiate(vfx[3], hit.point, Quaternion.identity);
+
+        }
     }
 
     void DestroyParticles()
@@ -39,7 +43,6 @@ public class HandGun : Weapon
         Destroy(GameObject.Find("Blood(Clone)"),1);
         Destroy(GameObject.Find("BulletImpact(Clone)"),1);
     }
-
     public override void Aim()
     {
         animator.SetBool("IsAiming", InputController.RightMouse);

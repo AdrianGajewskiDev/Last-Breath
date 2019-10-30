@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerHealth : MonoBehaviour, IHealth
 {
     [SerializeField] int maxHealth;
-    public int currentHealth;
+    int currentHealth;
 
     public void Die()
     {
