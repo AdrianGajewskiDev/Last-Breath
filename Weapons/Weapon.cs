@@ -6,6 +6,7 @@ public class Weapon : MonoBehaviour
     public int Damage;
     public int ClipSize;
     public int CurrentAmmoInClip;
+    public int MaxAmmo;
 
     public float rateOfFire;
     public float range;
@@ -31,18 +32,18 @@ public class Weapon : MonoBehaviour
         var direction = camera.transform.forward;
 
         AudioSource.PlayOneShot(gunShotSound);
-
+        CurrentAmmoInClip -= 1;
         if (Physics.Raycast(camera.transform.position, direction, out hit, range))
         {
             OnShot?.Invoke(hit);
         }
     }
 
-    public virtual bool CheckIfCanFire(ref float nextFireAllowed, float rateOfFire)
+    public virtual bool CheckIfCanFire(ref float nextFireAllowed, float rateOfFire, float currentAmmoInClip)
     {
         canFIre = InputController.LeftMouse;
 
-        if (canFIre && Time.time >= nextFireAllowed)
+        if (canFIre && Time.time >= nextFireAllowed && currentAmmoInClip > 0)
         {
             nextFireAllowed = Time.time + 1 / rateOfFire;
             return true;

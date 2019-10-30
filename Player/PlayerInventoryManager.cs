@@ -18,7 +18,7 @@ public class PlayerInventoryManager : MonoBehaviour
             Weapons.Add(m_CurrentWeapon);
     }
 
-    private void Update()
+    private void Awake()
     {
         SetCurrentWeapon();
     }

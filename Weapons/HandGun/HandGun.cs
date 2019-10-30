@@ -50,14 +50,17 @@ public class HandGun : Weapon
 
     void Update()
     {
-        if(CheckIfCanFire(ref timeToFireAllowed, rateOfFire))
+        canFIre = CheckIfCanFire(ref timeToFireAllowed, rateOfFire, CurrentAmmoInClip);
+
+        if (canFIre)
         {
             vfx[1].Play();
             vfx[2].Play();
-            Shot();     
+            Shot();
         }
-        
+
         animator.SetBool("IsShooting", canFIre);
+
         animator.SetBool("IsRunning", !FirstPersonController.IsWalking);
         Aim();
         DestroyParticles();
