@@ -1,13 +1,13 @@
-﻿using System.Collections;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityStandardAssets.Characters.FirstPerson;
 
 [RequireComponent(typeof(AudioSource))]
-public class HandGun : Weapon
+public class SMG : Weapon
 {
     float timeToFireAllowed;
-    
+
     private void Awake()
     {
         camera = Camera.main;
@@ -21,43 +21,40 @@ public class HandGun : Weapon
         UseStandartOnHitBehaviour(ref hit);
     }
 
-    void DestroyParticles()
-    {
-        Destroy(GameObject.Find("Blood(Clone)"),1);
-        Destroy(GameObject.Find("BulletImpact(Clone)"),1);
-    }
-    public override void Aim()
-    {
-        animator.SetBool("IsAiming", InputController.RightMouse);
-    }
-
-    void Update()
+    private void Update()
     {
         canFIre = CheckIfCanFire(ref timeToFireAllowed, rateOfFire, CurrentAmmoInClip);
 
         if (canFIre)
         {
+            HandleRecoil();
             vfx[1].Play();
             vfx[2].Play();
             Shot();
         }
 
-        animator.SetBool("IsShooting", canFIre);
-
-        animator.SetBool("IsRunning", !FirstPersonController.IsWalking);
-        Aim();
-        DestroyParticles();
-
         if (InputController.Reload && MaxAmmo > 0)
             StartCoroutine(Reload());
+
+        Aim();
+        
     }
 
     public override IEnumerator Reload()
     {
-        animator.SetBool("IsReloading", true);
-        AudioSource.PlayOneShot(gunReloadSound);
+        Debug.Log("Reloading...");
         yield return new WaitForSeconds(2f);
         HandleReload(ref CurrentAmmoInClip, ref ClipSize, ref MaxAmmo);
-        animator.SetBool("IsReloading", false);
+        Debug.Log("Reloaded");
+    }
+
+    public override void HandleRecoil()
+    {
+        Debug.Log("Recoil Works");
+    }
+
+    public override void Aim()
+    {
+        animator.SetBool("IsAiming", InputController.RightMouse);
     }
 }

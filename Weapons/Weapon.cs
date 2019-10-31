@@ -17,6 +17,14 @@ public class Weapon : MonoBehaviour
     [HideInInspector]public AudioSource AudioSource;
     [SerializeField] AudioClip gunShotSound;
     public AudioClip gunReloadSound;
+
+
+    /// <summary>
+    /// vfx[0]: Blood 
+    /// vfx[1]: Muzzle flash
+    /// vfx[2]: Bullet
+    /// vfx[3]: Bullet impact if no zombie was hitted
+    /// </summary>
     public  ParticleSystem[] vfx;
 
     public event System.Action<RaycastHit> OnShot;
@@ -72,7 +80,31 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    public void UseStandartOnHitBehaviour(ref RaycastHit hit)
+    {
+        var zombie = hit.transform.GetComponentInParent<ZombieHealth>();
+
+        if (zombie != null)
+        {
+            if (hit.transform.CompareTag("ZombieHead"))
+                zombie.GiveDamage(Damage * 2);
+            else
+                zombie.GiveDamage(Damage);
+
+            if (zombie.transform.CompareTag("Zombie"))
+                Instantiate(vfx[0], hit.point, Quaternion.identity);
+        }
+        else
+        {
+            if (hit.point != null)
+                Instantiate(vfx[3], hit.point, Quaternion.identity);
+
+        }
+    }
+
     public virtual void Aim() { }
 
     public virtual IEnumerator Reload() { yield return null; }
+
+    public virtual void HandleRecoil() { }
 }

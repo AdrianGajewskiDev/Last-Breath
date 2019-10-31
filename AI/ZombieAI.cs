@@ -16,7 +16,7 @@ public class ZombieAI : AI
 
     Animator animator;
 
-    public AudioSource playerWeaponSounds;
+    AudioSource playerWeaponSounds;
     public LayerMask layerMask;
 
     Rigidbody[] ragdolls;
@@ -66,6 +66,10 @@ public class ZombieAI : AI
         SetState();
         Move();
         AttackPlayer();
+
+        playerWeaponSounds = PlayerInventoryManager.Singleton.CurrentWeapon.transform.GetComponent<AudioSource>();
+
+        Debug.Log(playerWeaponSounds);
     }
 
     //Check if zombie don't see player but can hear him

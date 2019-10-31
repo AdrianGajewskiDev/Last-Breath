@@ -5,11 +5,14 @@ using UnityEngine;
 public class PlayerInventoryManager : MonoBehaviour
 {
     Weapon m_CurrentWeapon;
+
+    public static PlayerInventoryManager Singleton;
+
     public Weapon CurrentWeapon { get => m_CurrentWeapon; }
 
     public List<Weapon> Weapons = new List<Weapon>();
 
-    [SerializeField] private Transform hand;
+    [SerializeField] private GameObject[] hands;
 
     int currentWeaponIndex = 0;
 
@@ -17,7 +20,7 @@ public class PlayerInventoryManager : MonoBehaviour
     {
         if(Weapons.Any())
         {
-            Weapons[index].gameObject.SetActive(true);
+            Weapons[index].gameObject.transform.parent.gameObject.SetActive(true);
             m_CurrentWeapon = Weapons[index];
         }
     }
@@ -29,27 +32,34 @@ public class PlayerInventoryManager : MonoBehaviour
         if (InputController.PrimaryWeapon)
         {
             currentWeaponIndex = 0;
-            Weapons[currentWeaponIndex].gameObject.SetActive(true);
-            Weapons[1].gameObject.SetActive(false);
+            Weapons[currentWeaponIndex].gameObject.transform.parent.gameObject.SetActive(true);
+            Weapons[1].gameObject.transform.parent.gameObject.SetActive(false);
         }
 
         if (InputController.SecondaryWeapon)
         {
             currentWeaponIndex = 1;
-            Weapons[currentWeaponIndex].gameObject.SetActive(true);
-            Weapons[0].gameObject.SetActive(false);
+            Weapons[currentWeaponIndex].gameObject.transform.parent.gameObject.SetActive(true);
+            Weapons[0].gameObject.transform.parent.gameObject.SetActive(false); ;
         }
     }
 
     private void Awake()
     {
-        Weapons = hand.GetComponentsInChildren<Weapon>().ToList();    
+        Singleton = this;
+
+        hands = GameObject.FindGameObjectsWithTag("Hand");
+
+        foreach (GameObject hand in hands)
+        {
+            Weapons.Add(hand.transform.GetComponentInChildren<Weapon>());
+        }
 
         if(Weapons.Any())
         {
             foreach (Weapon weapon in Weapons)
             {
-                weapon.gameObject.SetActive(false);
+                weapon.gameObject.transform.parent.gameObject.SetActive(false);
             }
         }
 

@@ -4,7 +4,7 @@ public class ZombieHealth : MonoBehaviour, IHealth
 {
     public float MaxHealth;
 
-    public float currentHealth;
+    float currentHealth;
 
     Animator animator;
 
