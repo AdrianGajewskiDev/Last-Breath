@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -16,14 +16,12 @@ public class Weapon : MonoBehaviour
 
     [HideInInspector]public AudioSource AudioSource;
     [SerializeField] AudioClip gunShotSound;
+    public AudioClip gunReloadSound;
     public  ParticleSystem[] vfx;
 
     public event System.Action<RaycastHit> OnShot;
 
     [HideInInspector]public Animator animator;
-
-    public Vector3 AimPosition;
-    public Vector3 CurrentWeaponPosition;
 
     public virtual void Shot() 
     {
@@ -51,5 +49,30 @@ public class Weapon : MonoBehaviour
         else
             return false;
     }
+
+    public void HandleReload(ref int currentAmmoInClip, ref int clipSize, ref int maxAmmo)
+    {
+
+        if (MaxAmmo >= 1)
+        {
+            if (currentAmmoInClip > 0)
+            {
+                var currentAmmo = currentAmmoInClip;
+                var ammoToAdd = clipSize - currentAmmo;
+                maxAmmo -= ammoToAdd;
+                currentAmmoInClip += ammoToAdd;
+            }
+
+            if (currentAmmoInClip == 0)
+            {
+                var ammoToAdd = clipSize;
+                maxAmmo -= ammoToAdd;
+                currentAmmoInClip += ammoToAdd;
+            }
+        }
+    }
+
     public virtual void Aim() { }
+
+    public virtual IEnumerator Reload() { yield return null; }
 }

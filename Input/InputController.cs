@@ -10,6 +10,7 @@ public class InputController : MonoBehaviour
     public static bool PrimaryWeapon;
     public static bool SecondaryWeapon;
 
+    public static bool Reload;
     void Update()
     {
         LeftMouse = Input.GetMouseButtonDown(0) || Input.GetMouseButton(0);
@@ -17,5 +18,7 @@ public class InputController : MonoBehaviour
 
         PrimaryWeapon = Input.GetKeyDown(KeyCode.Alpha1);
         SecondaryWeapon = Input.GetKeyDown(KeyCode.Alpha2);
+
+        Reload = Input.GetKeyDown(KeyCode.R);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 
@@ -12,7 +13,6 @@ public class HandGun : Weapon
         camera = Camera.main;
         AudioSource = GetComponent<AudioSource>();
         animator = GetComponentInParent<Animator>();
-        CurrentWeaponPosition = this.gameObject.transform.parent.position;
         OnShot += HandleShooting;
     }
 
@@ -64,5 +64,17 @@ public class HandGun : Weapon
         animator.SetBool("IsRunning", !FirstPersonController.IsWalking);
         Aim();
         DestroyParticles();
+
+        if (InputController.Reload && MaxAmmo > 0)
+            StartCoroutine(Reload());
+    }
+
+    public override IEnumerator Reload()
+    {
+        animator.SetBool("IsReloading", true);
+        AudioSource.PlayOneShot(gunReloadSound);
+        yield return new WaitForSeconds(2f);
+        HandleReload(ref CurrentAmmoInClip, ref ClipSize, ref MaxAmmo);
+        animator.SetBool("IsReloading", false);
     }
 }
