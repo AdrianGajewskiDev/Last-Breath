@@ -1,12 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour, IHealth
 {
     [SerializeField] int maxHealth;
     int currentHealth;
 
+    public event System.Action OnHit;
     public void Die()
     {
         Debug.Log("We died :(");
@@ -15,6 +14,8 @@ public class PlayerHealth : MonoBehaviour, IHealth
     public void GiveDamage(int ammount)
     {
         currentHealth -= ammount;
+
+        OnHit?.Invoke();
     }
 
     public bool IsDead() => currentHealth <= 0;

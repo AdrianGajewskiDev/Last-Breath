@@ -27,11 +27,8 @@ public class ZombieAI : AI
     public AudioClip WalkAndPatrolSFX;
     public AudioClip RunSFX;
 
-    [Header("------------------------")]
-
     public bool makeZombieIdle;
 
-    Animator animator;
 
     AudioSource playerWeaponSounds;
     public LayerMask layerMask;
@@ -41,6 +38,7 @@ public class ZombieAI : AI
     [Header("Stats")]
     public int Damage;
 
+    Animator animator;
     NavMeshAgent agent;
     AudioSource audioSource;
 
@@ -251,7 +249,12 @@ public class ZombieAI : AI
 
     public void GiveDamageToPlayer()
     {
-        player.GetComponent<IHealth>().GiveDamage(Damage);
+        player.GetComponent<PlayerHealth>().OnHit += () =>
+        {
+           StartCoroutine( UIManager.Singleton.SetBloodOverlay());
+        };
+
+        player.GetComponent<PlayerHealth>().GiveDamage(Damage);
     }
 
     void PlaySoundEffects(ZombieState state)
