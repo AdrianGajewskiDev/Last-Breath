@@ -24,6 +24,7 @@ public class ZombieHealth : MonoBehaviour, IHealth
         {
             animator.SetBool("Died", true);
             GetComponent<ZombieAI>().enabled = false;
+            GetComponent<AudioSource>().Stop();
             Destroy(gameObject, 5);
         }
     }

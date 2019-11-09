@@ -61,11 +61,6 @@ public class SMG : Weapon
         isReloading = false;
     }
 
-    public override void HandleRecoil()
-    {
-        Debug.Log("Recoil works !!!");
-    }
-
     public override void Aim()
     {
         animator.SetBool("IsAiming", InputController.RightMouse);

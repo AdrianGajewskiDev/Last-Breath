@@ -6,6 +6,8 @@ using UnityStandardAssets.Characters.FirstPerson;
 using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(AudioSource))]
 public class ZombieAI : AI
 {
     [Header("Locomotion")]
@@ -20,6 +22,13 @@ public class ZombieAI : AI
     public float Angle;
     public float Radius;
 
+    [Header("Sound Effects")]
+    public AudioClip AttackSFX;
+    public AudioClip WalkAndPatrolSFX;
+    public AudioClip RunSFX;
+
+    [Header("------------------------")]
+
     public bool makeZombieIdle;
 
     Animator animator;
@@ -33,6 +42,7 @@ public class ZombieAI : AI
     public int Damage;
 
     NavMeshAgent agent;
+    AudioSource audioSource;
 
     enum ZombieState
     {
@@ -55,6 +65,7 @@ public class ZombieAI : AI
         animator = GetComponent<Animator>();
         ragdolls = GetComponentsInChildren<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
+        audioSource = GetComponent<AudioSource>();
         localPlayer = GameObject.FindGameObjectWithTag("Player").transform;
         DisableRagdoll();
     }
@@ -125,7 +136,6 @@ public class ZombieAI : AI
 
     void SetState()
     {
-        Debug.Log($"Walking {animator.GetBool("IsWalking")}" + animator.GetBool("IsRunning"));
 
         if (player != null)
         {
@@ -160,6 +170,8 @@ public class ZombieAI : AI
             state = ZombieState.Patrolling;
         }
 
+
+        PlaySoundEffects(state);
         PlayAnimation(state);
     }
 
@@ -240,5 +252,40 @@ public class ZombieAI : AI
     public void GiveDamageToPlayer()
     {
         player.GetComponent<IHealth>().GiveDamage(Damage);
+    }
+
+    void PlaySoundEffects(ZombieState state)
+    {
+        switch (state)
+        {
+            case ZombieState.Idle:
+                break;
+            case ZombieState.Walking:
+                {
+                    audioSource.clip = WalkAndPatrolSFX;
+                    audioSource.Play();
+                }
+                break;
+            case ZombieState.Running:
+                {
+                    audioSource.clip = RunSFX;
+                    audioSource.Play();
+                }
+                break;
+            case ZombieState.Attacking:
+                {
+                    audioSource.clip = AttackSFX;
+                    audioSource.Play();
+                }
+                break;
+            case ZombieState.Patrolling:
+                {
+                    audioSource.clip = WalkAndPatrolSFX;
+                    audioSource.Play();
+                }
+                break;
+            default:
+                break;
+        }
     }
 }
