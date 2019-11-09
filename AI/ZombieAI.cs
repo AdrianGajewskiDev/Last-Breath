@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.AI;
 using UnityStandardAssets.Characters.FirstPerson;
 using Random = UnityEngine.Random;
 
@@ -8,11 +11,16 @@ public class ZombieAI : AI
     [Header("Locomotion")]
     public float WalkSpeed;
     public float RunningSpeed;
+    public float PatrollingSpeed;
     [HideInInspector] public float Speed;
+    [SerializeField] Transform[] waypoints;
+    bool hasPath = false;
 
     [Header("FOV")]
     public float Angle;
     public float Radius;
+
+    public bool makeZombieIdle;
 
     Animator animator;
 
@@ -24,6 +32,7 @@ public class ZombieAI : AI
     [Header("Stats")]
     public int Damage;
 
+    NavMeshAgent agent;
 
     enum ZombieState
     {
@@ -34,7 +43,7 @@ public class ZombieAI : AI
         Patrolling
     }
 
-    ZombieState state;
+    [SerializeField] ZombieState state;
 
     Transform player;
     Transform localPlayer;
@@ -45,6 +54,7 @@ public class ZombieAI : AI
     {
         animator = GetComponent<Animator>();
         ragdolls = GetComponentsInChildren<Rigidbody>();
+        agent = GetComponent<NavMeshAgent>();
         localPlayer = GameObject.FindGameObjectWithTag("Player").transform;
         DisableRagdoll();
     }
@@ -54,22 +64,46 @@ public class ZombieAI : AI
         DrawGizmos(this.gameObject.transform, Radius, Angle);
     }
 
-    private void Update()
+    public void Update()
     {
         player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
 
+        SetState();
         CheckForPotentialTarget(localPlayer);
 
         if (player != null)
+        {
             RotateToTarget(this.gameObject.transform, player.transform.Find("LookAtTarget"), 3f);
-
-        SetState();
-        Move();
+            Move();
+            SetUpNavMeshAgent(false);
+        }
+        else
+        {
+            if (state != ZombieState.Idle && makeZombieIdle == false)
+            {
+                SetUpNavMeshAgent(true);
+                if (!agent.pathPending)
+                {
+                    if (agent.remainingDistance <= agent.stoppingDistance)
+                    {
+                        if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                        {
+                            SetDestination(ref agent, waypoints);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                SetUpNavMeshAgent(false);
+                state = ZombieState.Idle;
+                Speed = 0;
+                PlayAnimation(ZombieState.Idle);
+            }
+        }
+        
         AttackPlayer();
-
         playerWeaponSounds = PlayerInventoryManager.Singleton.CurrentWeapon.transform.GetComponent<AudioSource>();
-
-        Debug.Log(playerWeaponSounds);
     }
 
     //Check if zombie don't see player but can hear him
@@ -83,8 +117,16 @@ public class ZombieAI : AI
             player = target;
     }
 
+    void SetUpNavMeshAgent(bool enabled)
+    {
+        agent.enabled = enabled;
+        agent.speed = Speed;
+    }
+
     void SetState()
     {
+        Debug.Log($"Walking {animator.GetBool("IsWalking")}" + animator.GetBool("IsRunning"));
+
         if (player != null)
         {
 
@@ -92,6 +134,7 @@ public class ZombieAI : AI
                 return;
             else
             {
+
 
                 var behaviour = Random.Range(0, 2);
 
@@ -108,15 +151,16 @@ public class ZombieAI : AI
                     state = ZombieState.Running;
                 }
 
-                PlayAnimation(state);
             }
         }
         else
         {
-            Speed = 0;
-            state = ZombieState.Idle;
-            PlayAnimation(state);
+
+            Speed = PatrollingSpeed;
+            state = ZombieState.Patrolling;
         }
+
+        PlayAnimation(state);
     }
 
     void PlayAnimation(ZombieState state)
@@ -127,29 +171,36 @@ public class ZombieAI : AI
                 {
                     animator.SetBool("IsWalking", false);
                     animator.SetBool("IsRunning", false);
+                    animator.SetBool("IsPatrolling", false);
+
                 }
                 break;
 
             case ZombieState.Walking:
                 {
+                    animator.SetBool("IsPatrolling", false);
                     animator.SetBool("IsWalking", true);
                 }
                 break;
 
             case ZombieState.Running:
                 {
+                    animator.SetBool("IsPatrolling", false);
                     animator.SetBool("IsRunning", true);
                 }
                 break;
-
+            case ZombieState.Patrolling:
+                {
+                    animator.SetBool("IsRunning", false);
+                    animator.SetBool("IsWalking", false);
+                    animator.SetBool("IsPatrolling", true);
+                }
+                break;
         }
     }
 
     void Move()
     {
-        if (player == null)
-            return;
-
         transform.position += transform.forward * Speed * Time.deltaTime;
     }
 

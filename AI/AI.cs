@@ -76,4 +76,9 @@ public abstract class AI : MonoBehaviour
 
         agent.SetDestination(waypoint);
     }
+
+    public IEnumerator WaitForAction(float s)
+    {
+        yield return new WaitForSeconds(s);
+    }
 }

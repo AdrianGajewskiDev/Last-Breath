@@ -9,9 +9,13 @@ public class Crosshair : MonoBehaviour
    
     private void OnGUI()
     {
-        var x = (Screen.width / 2) - (width / 2);
-        var y = (Screen.height / 2) - (height / 2);
+        if(!InputController.RightMouse)
+        {
+            var x = (Screen.width / 2) - (width / 2);
+            var y = (Screen.height / 2) - (height / 2);
 
-       GUI.DrawTexture(new Rect(x,y, width,height),crosshairTexture);
+            GUI.DrawTexture(new Rect(x, y, width, height), crosshairTexture);
+        }
+        
     }
 }

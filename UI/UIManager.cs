@@ -8,7 +8,6 @@ public class UIManager : MonoBehaviour
 
     public Text AmmoDisplayer;
 
-
     private void UpdateIU()
     {
         AmmoDisplayer.text = $"{PlayerInventory.CurrentWeapon.CurrentAmmoInClip} / {PlayerInventory.CurrentWeapon.MaxAmmo}";

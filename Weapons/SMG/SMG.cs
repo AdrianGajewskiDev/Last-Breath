@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 [RequireComponent(typeof(AudioSource))]
 public class SMG : Weapon
@@ -25,7 +26,7 @@ public class SMG : Weapon
     {
         canFIre = CheckIfCanFire(ref timeToFireAllowed, rateOfFire, CurrentAmmoInClip);
 
-        if (canFIre)
+        if (canFIre && isReloading == false)
         {
             HandleRecoil();
             vfx[1].Play();
@@ -33,24 +34,36 @@ public class SMG : Weapon
             Shot();
         }
 
-        if (InputController.Reload && MaxAmmo > 0)
+        if (InputController.Reload && MaxAmmo > 0 && CurrentAmmoInClip != ClipSize)
             StartCoroutine(Reload());
 
         Aim();
-        
+
+        DestroyParticles();
+
+        animator.SetBool("IsRunning", !FirstPersonController.IsWalking);
+    }
+
+    void DestroyParticles()
+    {
+        Destroy(GameObject.Find("Blood(Clone)"), .2f);
+        Destroy(GameObject.Find("BulletImpact(Clone)"), .2f);
     }
 
     public override IEnumerator Reload()
     {
-        Debug.Log("Reloading...");
-        yield return new WaitForSeconds(2f);
+        isReloading = true;
+        animator.SetBool("IsReloading", true);
+        AudioSource.PlayOneShot(gunReloadSound);
+        yield return new WaitForSeconds(3f);
         HandleReload(ref CurrentAmmoInClip, ref ClipSize, ref MaxAmmo);
-        Debug.Log("Reloaded");
+        animator.SetBool("IsReloading", false);
+        isReloading = false;
     }
 
     public override void HandleRecoil()
     {
-        Debug.Log("Recoil Works");
+        Debug.Log("Recoil works !!!");
     }
 
     public override void Aim()

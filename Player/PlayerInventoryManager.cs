@@ -20,8 +20,8 @@ public class PlayerInventoryManager : MonoBehaviour
     {
         if(Weapons.Any())
         {
-            Weapons[index].gameObject.transform.parent.gameObject.SetActive(true);
-            m_CurrentWeapon = Weapons[index];
+            hands[index].gameObject.SetActive(true);
+            m_CurrentWeapon = hands[index].GetComponentInChildren<Weapon>();
         }
     }
 
@@ -32,15 +32,15 @@ public class PlayerInventoryManager : MonoBehaviour
         if (InputController.PrimaryWeapon)
         {
             currentWeaponIndex = 0;
-            Weapons[currentWeaponIndex].gameObject.transform.parent.gameObject.SetActive(true);
-            Weapons[1].gameObject.transform.parent.gameObject.SetActive(false);
+            hands[currentWeaponIndex].gameObject.SetActive(true);
+            hands[1].gameObject.SetActive(false);
         }
 
         if (InputController.SecondaryWeapon)
         {
             currentWeaponIndex = 1;
-            Weapons[currentWeaponIndex].gameObject.transform.parent.gameObject.SetActive(true);
-            Weapons[0].gameObject.transform.parent.gameObject.SetActive(false); ;
+            hands[currentWeaponIndex].SetActive(true);
+            hands[0].gameObject.SetActive(false);
         }
     }
 
@@ -57,9 +57,9 @@ public class PlayerInventoryManager : MonoBehaviour
 
         if(Weapons.Any())
         {
-            foreach (Weapon weapon in Weapons)
+            foreach (GameObject hand in hands)
             {
-                weapon.gameObject.transform.parent.gameObject.SetActive(false);
+                hand.gameObject.SetActive(false);
             }
         }
 

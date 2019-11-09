@@ -10,9 +10,11 @@ public class Weapon : MonoBehaviour
 
     public float rateOfFire;
     public float range;
+    public float weaponKick;
 
     protected Camera camera;
     protected bool canFIre;
+    protected bool isReloading;
 
     [HideInInspector]public AudioSource AudioSource;
     [SerializeField] AudioClip gunShotSound;
