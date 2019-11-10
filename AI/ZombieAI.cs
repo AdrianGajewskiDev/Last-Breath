@@ -14,6 +14,7 @@ public class ZombieAI : AI
     public float WalkSpeed;
     public float RunningSpeed;
     public float PatrollingSpeed;
+    public float distanceToAttack;
     [HideInInspector] public float Speed;
     [SerializeField] Transform[] waypoints;
     bool hasPath = false;
@@ -230,9 +231,11 @@ public class ZombieAI : AI
         var distanceToPlayer = Vector3.Distance(gameObject.transform.position, player.transform.position);
 
 
-        if (distanceToPlayer <= 2f)
+        if (distanceToPlayer <= distanceToAttack)
         {
+
             Speed = 0;
+            state = ZombieState.Attacking;
             animator.SetBool("Attack", true);
         }
         else
@@ -252,6 +255,8 @@ public class ZombieAI : AI
         player.GetComponent<PlayerHealth>().OnHit += () =>
         {
            StartCoroutine( UIManager.Singleton.SetBloodOverlay());
+            localPlayer.GetComponent<FirstPersonController>().AudioSource.clip = localPlayer.GetComponent<FirstPersonController>().hitSound;
+            localPlayer.GetComponent<FirstPersonController>().AudioSource.Play();
         };
 
         player.GetComponent<PlayerHealth>().GiveDamage(Damage);
