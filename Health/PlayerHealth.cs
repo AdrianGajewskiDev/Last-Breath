@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Threading.Tasks;
+using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour, IHealth
 {
@@ -8,7 +9,9 @@ public class PlayerHealth : MonoBehaviour, IHealth
     public event System.Action OnHit;
     public void Die()
     {
-        Debug.Log("We died :(");
+        UIManager.Singleton.DeathScreenFadeIn();
+        ZombiesManager.Singleton.DisableZombies();
+        ResetHealth();
     }
 
     public void GiveDamage(int ammount)
@@ -29,5 +32,10 @@ public class PlayerHealth : MonoBehaviour, IHealth
     {
         if (IsDead())
             Die();
+    }
+
+    void ResetHealth()
+    {
+        currentHealth = maxHealth;
     }
 }

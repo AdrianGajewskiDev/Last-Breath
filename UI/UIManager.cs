@@ -12,6 +12,10 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] RawImage bloodOverlay;
 
+    [SerializeField] Image DeathScreen;
+
+    public Text MessageDisplayer;
+
     private void Awake()
     {
         Singleton = this;
@@ -23,6 +27,11 @@ public class UIManager : MonoBehaviour
         bloodOverlay.enabled = true;
         yield return new WaitForSeconds(.3f);
         bloodOverlay.enabled = false;
+    }
+
+    public void DeathScreenFadeIn()
+    {
+        DeathScreen.GetComponent<Animation>().Play();
     }
 
     private void UpdateIU()

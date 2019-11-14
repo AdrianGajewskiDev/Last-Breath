@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+
+[RequireComponent(typeof(AudioSource))]
 public class Weapon : MonoBehaviour
 {
     public int Damage;
@@ -12,7 +14,9 @@ public class Weapon : MonoBehaviour
     public float range;
     public float weaponKick;
 
-    protected Camera camera;
+    public string Name;
+
+    protected new Camera camera;
     protected bool canFIre;
     protected bool isReloading;
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInventoryManager : MonoBehaviour
 {
-    Weapon m_CurrentWeapon;
+    public Weapon m_CurrentWeapon;
 
     public static PlayerInventoryManager Singleton;
 
@@ -12,9 +12,26 @@ public class PlayerInventoryManager : MonoBehaviour
 
     public List<Weapon> Weapons = new List<Weapon>();
 
-    [SerializeField] private GameObject[] hands;
+    [SerializeField] private List<GameObject> hands;
 
     int currentWeaponIndex = 0;
+
+    public void AddWeapon(GameObject prefab)
+    {
+        if(hands.Count < 2 && Weapons.Count < 2)
+        {
+            hands.Add(prefab);
+            Weapons.Add(prefab.GetComponentInChildren<Weapon>());
+        }
+        else
+        {
+            hands.RemoveAt(1);
+            Weapons.RemoveAt(1);
+
+            hands.Add(prefab);
+            Weapons.Add(prefab.GetComponentInChildren<Weapon>());
+        }
+    }
 
     private void SetCurrentWeapon(int index)
     {
@@ -48,7 +65,7 @@ public class PlayerInventoryManager : MonoBehaviour
     {
         Singleton = this;
 
-        hands = GameObject.FindGameObjectsWithTag("Hand");
+        hands = GameObject.FindGameObjectsWithTag("Hand").ToList();
 
         foreach (GameObject hand in hands)
         {

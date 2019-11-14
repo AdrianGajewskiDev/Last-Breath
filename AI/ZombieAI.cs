@@ -29,6 +29,7 @@ public class ZombieAI : AI
     public AudioClip RunSFX;
 
     public bool makeZombieIdle;
+    public bool SetSpecialAttack;
 
 
     AudioSource playerWeaponSounds;
@@ -113,6 +114,7 @@ public class ZombieAI : AI
         }
         
         AttackPlayer();
+
         playerWeaponSounds = PlayerInventoryManager.Singleton.CurrentWeapon.transform.GetComponent<AudioSource>();
     }
 
@@ -223,6 +225,7 @@ public class ZombieAI : AI
         }
     }
 
+   
     void AttackPlayer()
     {
         if (player == null)
@@ -230,12 +233,10 @@ public class ZombieAI : AI
 
         var distanceToPlayer = Vector3.Distance(gameObject.transform.position, player.transform.position);
 
-
         if (distanceToPlayer <= distanceToAttack)
         {
 
             Speed = 0;
-            state = ZombieState.Attacking;
             animator.SetBool("Attack", true);
         }
         else

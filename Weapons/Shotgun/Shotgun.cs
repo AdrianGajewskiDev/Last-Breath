@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 
-public class SMG : Weapon
+public class Shotgun : Weapon
 {
     float timeToFireAllowed;
+
+    public AudioClip reloadSoundAfterShot;
 
     private void Awake()
     {
@@ -19,6 +19,19 @@ public class SMG : Weapon
     private void HandleShooting(RaycastHit hit)
     {
         UseStandartOnHitBehaviour(ref hit);
+    }
+
+    IEnumerator ReloadAfterShot()
+    {
+        animator.SetBool("ReloadAfterShot", true);
+        yield return new WaitForSeconds(.2f);
+        AudioSource.PlayOneShot(reloadSoundAfterShot);
+        animator.SetBool("ReloadAfterShot", false); 
+    }
+    public override void Shot()
+    {
+        base.Shot();
+        StartCoroutine(ReloadAfterShot());
     }
 
     private void Update()
@@ -35,6 +48,8 @@ public class SMG : Weapon
 
         if (InputController.Reload && MaxAmmo > 0 && CurrentAmmoInClip != ClipSize)
             StartCoroutine(Reload());
+
+        animator.SetBool("IsShooting", canFIre);
 
         Aim();
 
@@ -53,8 +68,11 @@ public class SMG : Weapon
     {
         isReloading = true;
         animator.SetBool("IsReloading", true);
-        AudioSource.PlayOneShot(gunReloadSound);
-        yield return new WaitForSeconds(3f);
+        AudioSource.Play();
+        AudioSource.loop = true;
+        yield return new WaitForSeconds(2f);
+        AudioSource.loop = false;
+        AudioSource.Stop();
         HandleReload(ref CurrentAmmoInClip, ref ClipSize, ref MaxAmmo);
         animator.SetBool("IsReloading", false);
         isReloading = false;
