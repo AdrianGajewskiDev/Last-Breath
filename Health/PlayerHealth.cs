@@ -1,5 +1,5 @@
-﻿using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class PlayerHealth : MonoBehaviour, IHealth
 {
@@ -9,8 +9,10 @@ public class PlayerHealth : MonoBehaviour, IHealth
     public event System.Action OnHit;
     public void Die()
     {
-        UIManager.Singleton.DeathScreenFadeIn();
-        ZombiesManager.Singleton.DisableZombies();
+
+        //TODO: Move this to GameManager script
+        ZombiesManager.Singleton.gameOver = true;
+        ShowDeathScreen();
         ResetHealth();
     }
 
@@ -37,5 +39,15 @@ public class PlayerHealth : MonoBehaviour, IHealth
     void ResetHealth()
     {
         currentHealth = maxHealth;
+    }
+
+    void ShowDeathScreen()
+    {
+        UIManager.Singleton.DeathScreenFadeIn();
+        ZombiesManager.Singleton.DestroyAllZombies();
+        this.GetComponent<FirstPersonController>().enabled = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        PlayerInventoryManager.Singleton.CurrentWeapon.enabled = false;
     }
 }

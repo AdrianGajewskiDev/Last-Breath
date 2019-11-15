@@ -8,13 +8,21 @@ public class UIManager : MonoBehaviour
 
     public PlayerInventoryManager PlayerInventory;
 
+    [SerializeField] GameObject statsPanel;
+
     [SerializeField] Text AmmoDisplayer;
+
+    [SerializeField] Text ScoreDisplayer;
+
+    [SerializeField] Text ZombieKilled;
 
     [SerializeField] RawImage bloodOverlay;
 
     [SerializeField] Image DeathScreen;
 
     public Text MessageDisplayer;
+
+    bool showStatsMenu = false;
 
     private void Awake()
     {
@@ -34,13 +42,25 @@ public class UIManager : MonoBehaviour
         DeathScreen.GetComponent<Animation>().Play();
     }
 
+    private void SwitchStatsDisplayer(bool v)
+    {
+        statsPanel.SetActive(v);
+        showStatsMenu = !showStatsMenu;
+    }
+
+
     private void UpdateIU()
     {
         AmmoDisplayer.text = $"{PlayerInventory.CurrentWeapon.CurrentAmmoInClip} / {PlayerInventory.CurrentWeapon.MaxAmmo}";
+        ScoreDisplayer.text = $"Score: {PlayerStats.Singleton.Score}";
+        ZombieKilled.text = $"Zomies Killed: {PlayerStats.Singleton.KilledZombies}";
     }
 
     private void Update()
     {
         UpdateIU();
+
+        if (InputController.ShowStats)
+            SwitchStatsDisplayer(!showStatsMenu);
     }
 }

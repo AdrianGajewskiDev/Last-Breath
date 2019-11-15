@@ -15,6 +15,8 @@ public class ZombieAI : AI
     public float RunningSpeed;
     public float PatrollingSpeed;
     public float distanceToAttack;
+    public float zombieScoreAmountOnHit;
+    public float zombieScoreAmountOnDie;
     [HideInInspector] public float Speed;
     [SerializeField] Transform[] waypoints;
     bool hasPath = false;
@@ -68,6 +70,17 @@ public class ZombieAI : AI
         audioSource = GetComponent<AudioSource>();
         localPlayer = GameObject.FindGameObjectWithTag("Player").transform;
         DisableRagdoll();
+
+        this.GetComponent<ZombieHealth>().OnHit += () =>
+        {
+            localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnHit);
+        };
+        this.GetComponent<ZombieHealth>().OnDie += () => 
+        {
+            localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnDie);
+            localPlayer.GetComponent<PlayerStats>().AddKilledZombies(1);
+        };
+
     }
 
     private void OnDrawGizmos()

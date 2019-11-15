@@ -9,6 +9,7 @@ public class ZombieHealth : MonoBehaviour, IHealth
     Animator animator;
 
     public event System.Action OnHit;
+    public event System.Action OnDie;
 
     private void Awake()
     {
@@ -27,6 +28,13 @@ public class ZombieHealth : MonoBehaviour, IHealth
             GetComponent<AudioSource>().Stop();
             Destroy(gameObject, 5);
         }
+
+    }
+
+    private void OnDisable()
+    {
+        if(!ZombiesManager.Singleton.gameOver)
+            OnDie?.Invoke();
     }
 
     private void Update()
