@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,7 +20,7 @@ public class ZombieAI : AI
     public float zombieScoreAmountOnHit;
     public float zombieScoreAmountOnDie;
     [HideInInspector] public float Speed;
-    [SerializeField] Transform[] waypoints;
+    public IList<Transform> _waypoints = new List<Transform>();
     bool hasPath = false;
 
     [Header("FOV")]
@@ -60,10 +62,19 @@ public class ZombieAI : AI
     Transform player;
     Transform localPlayer;
 
+    void SetWaypoints()
+    {
+        var waypoints = GameObject.FindGameObjectsWithTag("Waypoint");
 
+        foreach (var w in waypoints)
+        {
+            _waypoints.Add(w.transform);
+        }
+    }
 
     private void Awake()
     {
+        SetWaypoints();
         animator = GetComponent<Animator>();
         ragdolls = GetComponentsInChildren<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
@@ -112,7 +123,7 @@ public class ZombieAI : AI
                     {
                         if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
                         {
-                            SetDestination(ref agent, waypoints);
+                            SetDestination(ref agent, _waypoints);
                         }
                     }
                 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -69,9 +70,9 @@ public abstract class AI : MonoBehaviour
         return obj.rotation;
     }
 
-    public void SetDestination(ref NavMeshAgent agent, Transform[] waypoints)
+    public void SetDestination(ref NavMeshAgent agent, IList<Transform> waypoints)
     {
-        var index = UnityEngine.Random.Range(0, waypoints.Length);
+        var index = UnityEngine.Random.Range(0, waypoints.Count);
         var waypoint = waypoints[index].position;
 
         agent.SetDestination(waypoint);

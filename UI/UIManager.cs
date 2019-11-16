@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] Text ZombieKilled;
 
+    [SerializeField] Text LevelCounter;
+
     [SerializeField] RawImage bloodOverlay;
 
     [SerializeField] Image DeathScreen;
@@ -54,6 +56,7 @@ public class UIManager : MonoBehaviour
         AmmoDisplayer.text = $"{PlayerInventory.CurrentWeapon.CurrentAmmoInClip} / {PlayerInventory.CurrentWeapon.MaxAmmo}";
         ScoreDisplayer.text = $"Score: {PlayerStats.Singleton.Score}";
         ZombieKilled.text = $"Zomies Killed: {PlayerStats.Singleton.KilledZombies}";
+        LevelCounter.text = $"Level: {LevelManager.Singleton.CurrentLevel}";
     }
 
     private void Update()

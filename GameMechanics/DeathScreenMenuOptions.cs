@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class DeathScreenMenu : MonoBehaviour
+public class DeathScreenMenuOptions : MonoBehaviour
 {
-    public void ReloadCurrentScene()
+    public void ReloadCurrentLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }

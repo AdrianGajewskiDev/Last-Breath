@@ -12,7 +12,7 @@ public class ZombiesManager : MonoBehaviour
 
     public static ZombiesManager Singleton;
 
-    public bool gameOver;
+    [HideInInspector] public bool gameOver;
 
     void Start()
     {
@@ -21,10 +21,10 @@ public class ZombiesManager : MonoBehaviour
 
     private void Awake()
     {
-        SpawnZombies(3);
+        Zombies = GameObject.FindGameObjectsWithTag("Zombie").ToList();
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         Zombies = GameObject.FindGameObjectsWithTag("Zombie").ToList();
     }
