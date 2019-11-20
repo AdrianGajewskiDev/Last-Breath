@@ -53,7 +53,7 @@ public class Weapon : MonoBehaviour
 
     public virtual bool CheckIfCanFire(ref float nextFireAllowed, float rateOfFire, float currentAmmoInClip)
     {
-        canFIre = InputController.LeftMouse;
+        canFIre = InputController.LeftMouse || InputController.Xbox_RightBumber;
 
         if (canFIre && Time.time >= nextFireAllowed && currentAmmoInClip > 0)
         {
@@ -109,6 +109,7 @@ public class Weapon : MonoBehaviour
     }
 
     public virtual void Aim() { }
+
 
     public virtual IEnumerator Reload() { yield return null; }
 

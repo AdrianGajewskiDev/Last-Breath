@@ -28,7 +28,7 @@ public class HandGun : Weapon
     }
     public override void Aim()
     {
-        animator.SetBool("IsAiming", InputController.RightMouse);
+        animator.SetBool("IsAiming", InputController.RightMouse || InputController.Xbox_LeftBumber);
     }
 
     void Update()
@@ -48,7 +48,7 @@ public class HandGun : Weapon
         Aim();
         DestroyParticles();
 
-        if (InputController.Reload && MaxAmmo > 0)
+        if (InputController.Reload || InputController.Xbox_X && MaxAmmo > 0)
             StartCoroutine(Reload());
     }
 

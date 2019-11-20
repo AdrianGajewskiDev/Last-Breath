@@ -23,14 +23,10 @@ public class LevelManager : MonoBehaviour
 
         if (currentLevel.LevelFinished == true)
         {
+            StartCoroutine( UIManager.Singleton.PlayLevelFinishedAnimation());
             currentLevel.ZombiesToSpawnNumber += 2;
-            IncreaseLevel();
+            currentLevel.IncreaseLevel();
             ZombiesManager.Singleton.SpawnZombies(currentLevel.ZombiesToSpawnNumber);
         }
-    }
-
-    public void IncreaseLevel()
-    {
-        currentLevel.LevelNumber += 1;
     }
 }

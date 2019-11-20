@@ -33,7 +33,7 @@ public class SMG : Weapon
             Shot();
         }
 
-        if (InputController.Reload && MaxAmmo > 0 && CurrentAmmoInClip != ClipSize)
+        if (InputController.Reload || InputController.Xbox_X && MaxAmmo > 0 && CurrentAmmoInClip != ClipSize)
             StartCoroutine(Reload());
 
         Aim();
@@ -62,6 +62,6 @@ public class SMG : Weapon
 
     public override void Aim()
     {
-        animator.SetBool("IsAiming", InputController.RightMouse);
+        animator.SetBool("IsAiming", InputController.RightMouse || InputController.Xbox_LeftBumber);
     }
 }

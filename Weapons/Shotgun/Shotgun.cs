@@ -46,7 +46,7 @@ public class Shotgun : Weapon
             Shot();
         }
 
-        if (InputController.Reload && MaxAmmo > 0 && CurrentAmmoInClip != ClipSize)
+        if (InputController.Reload || InputController.Xbox_X && MaxAmmo > 0 && CurrentAmmoInClip != ClipSize)
             StartCoroutine(Reload());
 
         animator.SetBool("IsShooting", canFIre);
@@ -80,6 +80,6 @@ public class Shotgun : Weapon
 
     public override void Aim()
     {
-        animator.SetBool("IsAiming", InputController.RightMouse);
+        animator.SetBool("IsAiming", InputController.RightMouse || InputController.Xbox_LeftBumber);
     }
 }

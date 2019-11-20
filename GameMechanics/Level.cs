@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-public class Level 
+﻿public class Level 
 {
     public int LevelNumber = 1;
     public int ZombiesToSpawnNumber;
@@ -8,7 +6,7 @@ public class Level
 
     public bool LevelFinished => ZombiesLeft <= 0;
 
-    public void ResetLevel()
+    public void IncreaseLevel()
     {
         LevelNumber += 1;
         ZombiesToSpawnNumber += 2;

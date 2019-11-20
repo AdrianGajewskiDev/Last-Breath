@@ -10,6 +10,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] GameObject statsPanel;
 
+    [SerializeField] GameObject levelFinPanel;
+
     [SerializeField] Text AmmoDisplayer;
 
     [SerializeField] Text ScoreDisplayer;
@@ -17,6 +19,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] Text ZombieKilled;
 
     [SerializeField] Text LevelCounter;
+
+    [SerializeField] Text LevelFinText;
 
     [SerializeField] RawImage bloodOverlay;
 
@@ -39,6 +43,14 @@ public class UIManager : MonoBehaviour
         bloodOverlay.enabled = false;
     }
 
+    public IEnumerator PlayLevelFinishedAnimation()
+    {
+        levelFinPanel.GetComponent<Animation>().Play();
+        Crosshair.Singleton.HideCrosshair = true;
+        yield return new WaitForSeconds(3f);
+        Crosshair.Singleton.HideCrosshair = false;
+    }
+
     public void DeathScreenFadeIn()
     {
         DeathScreen.GetComponent<Animation>().Play();
@@ -57,6 +69,7 @@ public class UIManager : MonoBehaviour
         ScoreDisplayer.text = $"Score: {PlayerStats.Singleton.Score}";
         ZombieKilled.text = $"Zomies Killed: {PlayerStats.Singleton.KilledZombies}";
         LevelCounter.text = $"Level: {LevelManager.Singleton.CurrentLevel}";
+        LevelFinText.text = $"{LevelCounter.text}";
     }
 
     private void Update()
