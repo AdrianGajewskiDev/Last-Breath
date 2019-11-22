@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityStandardAssets.CrossPlatformInput;
 
 [Serializable]
 public class MouseLook
@@ -30,8 +29,8 @@ public class MouseLook
     public void LookRotation(Transform character, Transform camera)
     {
 
-        float yRot = CrossPlatformInputManager.GetAxis("Mouse X") * XSensitivity;
-        float xRot = CrossPlatformInputManager.GetAxis("Mouse Y")  * YSensitivity;
+        float yRot = Input.GetAxis("Mouse X") * XSensitivity;
+        float xRot = Input.GetAxis("Mouse Y")  * YSensitivity;
 
         if (Input.GetJoystickNames().Length != 0)
         {

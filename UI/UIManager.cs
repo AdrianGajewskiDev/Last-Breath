@@ -33,6 +33,7 @@ public class UIManager : MonoBehaviour
 
     bool showStatsMenu = false;
     bool showPauseMenu = false;
+    bool showOptionsMenu = false;
 
     private void Awake()
     {
@@ -71,6 +72,16 @@ public class UIManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         pauseMenuPanel.GetComponent<Animation>().Play("PauseMenuSlideOut");
+    }
+
+    public void OptionsMenuSlideIn()
+    {
+        pauseMenuPanel.GetComponent<Animation>().Play("OptionsMenuSlideIn");
+    }
+
+    public void OptionsMenuSlideOut()
+    {
+        pauseMenuPanel.GetComponent<Animation>().Play("OptionsMenuSlideOut");
     }
 
     public void DeathScreenFadeIn()
