@@ -12,6 +12,7 @@ public  class InputController : MonoBehaviour
 
     public static bool Reload;
     public static bool ShowStats;
+    public static bool ShowPauseMenu;
     public static bool PickUpItem;
 
     #region Xbox_One_Input
@@ -35,6 +36,7 @@ public  class InputController : MonoBehaviour
 
         Reload = Input.GetKeyDown(KeyCode.R);
         ShowStats = Input.GetKeyDown(KeyCode.Tab);
+        ShowPauseMenu = Input.GetKeyDown(KeyCode.Escape);
         PickUpItem = Input.GetKeyDown(KeyCode.F);
 
         //Xbox one
