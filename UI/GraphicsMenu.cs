@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class GraphicsMenu : MonoBehaviour
@@ -11,6 +9,30 @@ public class GraphicsMenu : MonoBehaviour
     public Slider lightShadowStrengthSlider;
     public Toggle fullScreen;
 
+
+    #region Quality Levels
+    public void SetQuality_Low()
+    {
+        QualitySettings.SetQualityLevel(1);
+    }
+
+    public void SetQuality_Medium()
+    {
+        QualitySettings.SetQualityLevel(2);
+    }
+
+    public void SetQuality_High()
+    {
+        QualitySettings.SetQualityLevel(3);
+    }
+    public void SetQuality_Ultra()
+    {
+        QualitySettings.SetQualityLevel(5, true);
+    }
+
+    #endregion
+
+    #region Resolution Levels
     public void SetResolution_1280_720()
     {
         Screen.SetResolution(1280, 720, fullScreen.isOn);
@@ -24,12 +46,9 @@ public class GraphicsMenu : MonoBehaviour
     {
         Screen.SetResolution(1366, 768, fullScreen.isOn);
     }
+    #endregion
 
-    private void FixedUpdate()
-    {
-        Debug.Log(Screen.currentResolution);
-    }
-
+    #region Light Intensity
     void SetLightIntensity()
     {
         light.intensity = lightSlider.value;
@@ -43,7 +62,8 @@ public class GraphicsMenu : MonoBehaviour
     void FullScreen()
     {
         Screen.fullScreen = fullScreen.isOn;
-    }
+    } 
+    #endregion
 
     private void Update()
     {
