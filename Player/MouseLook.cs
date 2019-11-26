@@ -1,3 +1,5 @@
+using LB.InputControllers;
+using LB.UI;
 using System;
 using UnityEngine;
 
@@ -32,7 +34,7 @@ public class MouseLook
         float yRot = Input.GetAxis("Mouse X") * XSensitivity;
         float xRot = Input.GetAxis("Mouse Y")  * YSensitivity;
 
-        if (Input.GetJoystickNames().Length != 0)
+        if (ControllsMenu.inputType == InputType.controller)
         {
             xRot = -InputController.Xbox_Horizontal_Right_Thumbstick * Xbox_SensitivityX;
             yRot = -InputController.Xbox_Vertical_Right_Thumbstick * Xbox_SensitivityY;

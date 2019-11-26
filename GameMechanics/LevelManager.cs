@@ -1,32 +1,38 @@
-﻿using UnityEngine;
+﻿using LB.UI;
+using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+namespace LB.GameMechanics
 {
-    public static LevelManager Singleton;
-
-    public int CurrentLevel;
-    public int ZombiesToSpawnNumber = 3;
-
-    Level currentLevel = new Level();
-
-    void Start()
+    public class LevelManager : MonoBehaviour
     {
-        Singleton = this;
-        currentLevel.ZombiesToSpawnNumber = ZombiesToSpawnNumber;
-        CurrentLevel = currentLevel.LevelNumber;
-        ZombiesManager.Singleton.SpawnZombies(currentLevel.ZombiesToSpawnNumber);
-    }
+        public static LevelManager Singleton;
 
-    private void Update()
-    {
-        CurrentLevel = currentLevel.LevelNumber;
+        public int CurrentLevel;
+        public int ZombiesToSpawnNumber = 3;
 
-        if (currentLevel.LevelFinished == true)
+        Level currentLevel = new Level();
+
+        void Start()
         {
-            StartCoroutine( UIManager.Singleton.PlayLevelFinishedAnimation());
-            currentLevel.ZombiesToSpawnNumber += 2;
-            currentLevel.IncreaseLevel();
+            Singleton = this;
+            currentLevel.ZombiesToSpawnNumber = ZombiesToSpawnNumber;
+            CurrentLevel = currentLevel.LevelNumber;
             ZombiesManager.Singleton.SpawnZombies(currentLevel.ZombiesToSpawnNumber);
         }
+
+        private void Update()
+        {
+            CurrentLevel = currentLevel.LevelNumber;
+
+            if (currentLevel.LevelFinished == true)
+            {
+                StartCoroutine(UIManager.Singleton.PlayLevelFinishedAnimation());
+                currentLevel.ZombiesToSpawnNumber += 2;
+                currentLevel.IncreaseLevel();
+                ZombiesManager.Singleton.SpawnZombies(currentLevel.ZombiesToSpawnNumber);
+            }
+        }
     }
+
 }
+

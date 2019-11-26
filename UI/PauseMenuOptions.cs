@@ -1,35 +1,39 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
-public class PauseMenuOptions : MonoBehaviour
+namespace LB.UI
 {
-
-    bool optionsMenuVisible = false;
-
-    public void Resume()
+    public class PauseMenuOptions : MonoBehaviour
     {
-        UIManager.Singleton.PauseMenuSlideOut();
-    }
 
-    public void Options()
-    {
-        if(optionsMenuVisible == false)
+        bool optionsMenuVisible = false;
+
+        public void Resume()
         {
-            optionsMenuVisible = true;
-            UIManager.Singleton.OptionsMenuSlideIn();
+            UIManager.Singleton.PauseMenuSlideOut();
         }
 
-        else if(optionsMenuVisible == true)
+        public void Options()
         {
-            optionsMenuVisible = false;
-            UIManager.Singleton.OptionsMenuSlideOut();
+            if (optionsMenuVisible == false)
+            {
+                optionsMenuVisible = true;
+                UIManager.Singleton.OptionsMenuSlideIn();
+            }
+
+            else if (optionsMenuVisible == true)
+            {
+                optionsMenuVisible = false;
+                UIManager.Singleton.OptionsMenuSlideOut();
+            }
         }
+
+        public void MainMenu()
+        {
+
+        }
+
+
     }
 
-    public void MainMenu()
-    {
-
-    }
-
-    
 }
+

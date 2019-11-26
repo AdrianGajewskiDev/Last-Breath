@@ -1,38 +1,52 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PauseMenuButtonsOnHover : MonoBehaviour
+namespace LB.UI
 {
-
-    public void OnEnter()
+    public class PauseMenuButtonsOnHover : MonoBehaviour
     {
+        public AudioSource audioSource;
+        public AudioClip hoverSound;
+        public AudioClip clickSound;
 
-        switch (gameObject.name)
+        public virtual void OnClick()
         {
-            case "Resume":
-                {
-                    UIManager.Singleton.PauseMenuText.text = "Resume game";
-                }
-                break;
-            case "Main Menu":
-                {
-
-                    UIManager.Singleton.PauseMenuText.text = "Go back to main menu";
-                }
-                break;
-            case "Options":
-                {
-
-                    UIManager.Singleton.PauseMenuText.text = "Show options";
-                }
-                break;
+            PlayClip(clickSound);
         }
 
+        public void OnEnter()
+        {
+
+            switch (gameObject.name)
+            {
+                case "Resume":
+                    {
+                        UIManager.Singleton.PauseMenuText.text = "Resume game";
+                    }
+                    break;
+                case "Main Menu":
+                    {
+                        UIManager.Singleton.PauseMenuText.text = "Go back to main menu";
+                    }
+                    break;
+                case "Options":
+                    {
+                        UIManager.Singleton.PauseMenuText.text = "Show options";
+                    }
+                    break;
+            }
+            PlayClip(hoverSound);
+
+        }
+
+        void PlayClip(AudioClip clip)
+        {
+            audioSource.PlayOneShot(clip);
+        }
+
+        public void OnExit()
+        {
+            UIManager.Singleton.PauseMenuText.text = string.Empty;
+        }
     }
 
-    public void OnExit()
-    {
-        UIManager.Singleton.PauseMenuText.text = string.Empty;
-    }
 }

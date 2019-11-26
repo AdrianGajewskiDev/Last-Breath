@@ -1,41 +1,47 @@
-﻿using UnityEngine;
+﻿using LB.Player;
+using UnityEngine;
 using UnityEngine.UI;
 
-public class SoundMenu : MonoBehaviour
+namespace LB.UI
 {
-    public AudioSource mainAudioSource;
-
-    public Slider volumeSlider;
-    public Slider pitchSlider;
-    public Slider WeaponVolumeSlider;
-    public Toggle bypassEffects;
-
-    void SetVolume()
+    public class SoundMenu : MonoBehaviour
     {
-        mainAudioSource.volume = volumeSlider.value;
+        public AudioSource mainAudioSource;
+
+        public Slider volumeSlider;
+        public Slider pitchSlider;
+        public Slider WeaponVolumeSlider;
+        public Toggle bypassEffects;
+
+        void SetVolume()
+        {
+            mainAudioSource.volume = volumeSlider.value;
+        }
+
+        void SetPitch()
+        {
+            mainAudioSource.pitch = pitchSlider.value;
+        }
+
+        void SetWeaponVolume()
+        {
+            PlayerInventoryManager.Singleton.CurrentWeapon.GetComponent<AudioSource>().volume = WeaponVolumeSlider.value;
+        }
+
+        void SetBypassEffects()
+        {
+            mainAudioSource.bypassEffects = bypassEffects.isOn;
+        }
+
+        private void Update()
+        {
+
+            SetBypassEffects();
+            SetVolume();
+            SetWeaponVolume();
+            SetPitch();
+        }
     }
 
-    void SetPitch()
-    {
-        mainAudioSource.pitch = pitchSlider.value;
-    }
-
-    void SetWeaponVolume()
-    {
-        PlayerInventoryManager.Singleton.CurrentWeapon.GetComponent<AudioSource>().volume = WeaponVolumeSlider.value;
-    }
-
-    void SetBypassEffects()
-    {
-        mainAudioSource.bypassEffects = bypassEffects.isOn;
-    }
-
-    private void Update()
-    {
-
-        SetBypassEffects();
-        SetVolume();
-        SetWeaponVolume();
-        SetPitch();
-    }
 }
+

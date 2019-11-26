@@ -1,7 +1,12 @@
-﻿public interface IHealth
+﻿
+namespace LB.Health
 {
-    void GiveDamage(int ammount);
-    void Die();
+    public interface IHealth
+    {
+        void GiveDamage(int ammount);
+        void Die();
 
-    bool IsDead();
+        bool IsDead();
+    }
+
 }

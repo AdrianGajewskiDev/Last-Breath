@@ -1,3 +1,5 @@
+using LB.InputControllers;
+using LB.UI;
 using System;
 using UnityEngine;
 using UnityStandardAssets.Utility;
@@ -213,7 +215,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
 #if !MOBILE_INPUT
 
-            if (Input.GetJoystickNames().Length != 0)
+            if (ControllsMenu.inputType == InputType.controller)
                 IsWalking = !InputController.Xbox_Run;
             else
                 IsWalking = !Input.GetKey(KeyCode.LeftShift);

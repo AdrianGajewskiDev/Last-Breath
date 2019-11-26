@@ -1,20 +1,26 @@
-﻿using UnityEngine;
+﻿using LB.Player;
+using UnityEngine;
 
-[RequireComponent(typeof(AudioSource))]
-public class AmmoBox : MonoBehaviour
+namespace LB.GameMechanics
 {
-    private AudioSource audioSource;
-    public int AmmoAmount;
-
-    private void Awake()
+    [RequireComponent(typeof(AudioSource))]
+    public class AmmoBox : MonoBehaviour
     {
-        audioSource = GetComponent<AudioSource>();
+        private AudioSource audioSource;
+        public int AmmoAmount;
+
+        private void Awake()
+        {
+            audioSource = GetComponent<AudioSource>();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            PlayerInventoryManager.Singleton.CurrentWeapon.MaxAmmo += AmmoAmount;
+            audioSource.Play();
+            Destroy(gameObject, .3f);
+        }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        PlayerInventoryManager.Singleton.CurrentWeapon.MaxAmmo += AmmoAmount;
-        audioSource.Play();
-        Destroy(gameObject,.3f);
-    }
 }
+

@@ -1,63 +1,68 @@
-﻿using System.Collections;
-using System.Threading.Tasks;
+﻿using LB.InputControllers;
+using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
 
-[RequireComponent(typeof(AudioSource))]
-public class HandGun : Weapon
+
+namespace LB.Weapons.HandGun
 {
-    float timeToFireAllowed;
-    
-    private void Awake()
+    [RequireComponent(typeof(AudioSource))]
+    public class HandGun : Weapon
     {
-        camera = Camera.main;
-        AudioSource = GetComponent<AudioSource>();
-        animator = GetComponentInParent<Animator>();
-        OnShot += HandleShooting;
-    }
+        float timeToFireAllowed;
 
-    private void HandleShooting(RaycastHit hit)
-    {
-        UseStandartOnHitBehaviour(ref hit);
-    }
-
-    void DestroyParticles()
-    {
-        Destroy(GameObject.Find("Blood(Clone)"),1);
-        Destroy(GameObject.Find("BulletImpact(Clone)"),1);
-    }
-    public override void Aim()
-    {
-        animator.SetBool("IsAiming", InputController.RightMouse || InputController.Xbox_LeftBumber);
-    }
-
-    void Update()
-    {
-        canFIre = CheckIfCanFire(ref timeToFireAllowed, rateOfFire, CurrentAmmoInClip);
-
-        if (canFIre)
+        private void Awake()
         {
-            vfx[1].Play();
-            vfx[2].Play();
-            Shot();
+            camera = Camera.main;
+            AudioSource = GetComponent<AudioSource>();
+            animator = GetComponentInParent<Animator>();
+            OnShot += HandleShooting;
         }
 
-        animator.SetBool("IsShooting", canFIre);
+        private void HandleShooting(RaycastHit hit)
+        {
+            UseStandartOnHitBehaviour(ref hit);
+        }
 
-        animator.SetBool("IsRunning", !FirstPersonController.IsWalking);
-        Aim();
-        DestroyParticles();
+        void DestroyParticles()
+        {
+            Destroy(GameObject.Find("Blood(Clone)"), 1);
+            Destroy(GameObject.Find("BulletImpact(Clone)"), 1);
+        }
+        public override void Aim()
+        {
+            animator.SetBool("IsAiming", InputController.RightMouse || InputController.Xbox_LeftBumber);
+        }
 
-        if (InputController.Reload || InputController.Xbox_X && MaxAmmo > 0)
-            StartCoroutine(Reload());
+        void Update()
+        {
+            canFIre = CheckIfCanFire(ref timeToFireAllowed, rateOfFire, CurrentAmmoInClip);
+
+            if (canFIre)
+            {
+                vfx[1].Play();
+                vfx[2].Play();
+                Shot();
+            }
+
+            animator.SetBool("IsShooting", canFIre);
+
+            animator.SetBool("IsRunning", !FirstPersonController.IsWalking);
+            Aim();
+            DestroyParticles();
+
+            if (InputController.Reload || InputController.Xbox_X && MaxAmmo > 0)
+                StartCoroutine(Reload());
+        }
+
+        public override IEnumerator Reload()
+        {
+            animator.SetBool("IsReloading", true);
+            AudioSource.PlayOneShot(gunReloadSound);
+            yield return new WaitForSeconds(2f);
+            HandleReload(ref CurrentAmmoInClip, ref ClipSize, ref MaxAmmo);
+            animator.SetBool("IsReloading", false);
+        }
     }
 
-    public override IEnumerator Reload()
-    {
-        animator.SetBool("IsReloading", true);
-        AudioSource.PlayOneShot(gunReloadSound);
-        yield return new WaitForSeconds(2f);
-        HandleReload(ref CurrentAmmoInClip, ref ClipSize, ref MaxAmmo);
-        animator.SetBool("IsReloading", false);
-    }
 }

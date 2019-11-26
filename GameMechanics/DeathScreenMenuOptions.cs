@@ -1,10 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class DeathScreenMenuOptions : MonoBehaviour
+namespace LB.GameMechanics 
 {
-    public void ReloadCurrentLevel()
+
+    public class DeathScreenMenuOptions : MonoBehaviour
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        public void ReloadCurrentLevel()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
+
 }
