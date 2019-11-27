@@ -5,6 +5,7 @@ using LB.Weapons;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityStandardAssets.Characters.FirstPerson;
 
 namespace LB.UI
 {
@@ -41,6 +42,7 @@ namespace LB.UI
         bool showPauseMenu = false;
         bool showOptionsMenu = false;
 
+
         private void Awake()
         {
             Singleton = this;
@@ -64,6 +66,7 @@ namespace LB.UI
 
         public void PauseMenuSlideIn()
         {
+            LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().enabled = false;
             showPauseMenu = true;
             Crosshair.Singleton.HideCrosshair = true;
             PlayerInventoryManager.Singleton.CurrentWeapon.GetComponent<Weapon>().enabled = false;
@@ -73,6 +76,8 @@ namespace LB.UI
         }
         public void PauseMenuSlideOut()
         {
+            LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().enabled = true;
+
             Crosshair.Singleton.HideCrosshair = false;
             showPauseMenu = false;
             PlayerInventoryManager.Singleton.CurrentWeapon.GetComponent<Weapon>().enabled = true;
@@ -107,7 +112,7 @@ namespace LB.UI
         {
             AmmoDisplayer.text = $"{PlayerInventory.CurrentWeapon.CurrentAmmoInClip} / {PlayerInventory.CurrentWeapon.MaxAmmo}";
             ScoreDisplayer.text = $"Score: {PlayerStats.Singleton.Score}";
-            ZombieKilled.text = $"Zomies Killed: {PlayerStats.Singleton.KilledZombies}";
+            ZombieKilled.text = $"Zombies Killed: {PlayerStats.Singleton.KilledZombies}";
             LevelCounter.text = $"Level: {LevelManager.Singleton.CurrentLevel}";
             LevelFinText.text = $"{LevelCounter.text}";
         }

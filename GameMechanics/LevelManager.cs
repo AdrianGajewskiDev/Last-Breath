@@ -12,6 +12,13 @@ namespace LB.GameMechanics
 
         Level currentLevel = new Level();
 
+        public GameObject localPlayer;
+
+        private void Awake()
+        {
+            localPlayer = GameObject.FindGameObjectWithTag("Player");
+        }
+
         void Start()
         {
             Singleton = this;
@@ -22,9 +29,11 @@ namespace LB.GameMechanics
 
         private void Update()
         {
+            localPlayer = GameObject.FindGameObjectWithTag("Player");
             CurrentLevel = currentLevel.LevelNumber;
 
-            if (currentLevel.LevelFinished == true)
+           
+            if (currentLevel.LevelFinished == true && ZombiesManager.Singleton.gameOver == false)
             {
                 StartCoroutine(UIManager.Singleton.PlayLevelFinishedAnimation());
                 currentLevel.ZombiesToSpawnNumber += 2;

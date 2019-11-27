@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using LB.GameMechanics;
+using UnityEngine;
 
 namespace LB.UI
 {

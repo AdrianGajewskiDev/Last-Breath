@@ -1,4 +1,5 @@
-﻿using LB.Health;
+﻿using LB.GameMechanics;
+using LB.Health;
 using LB.Player;
 using LB.UI;
 using System.Collections.Generic;
@@ -63,7 +64,6 @@ namespace LB.AI
         [SerializeField] ZombieState state;
 
         Transform player;
-        Transform localPlayer;
 
         void SetWaypoints()
         {
@@ -82,32 +82,31 @@ namespace LB.AI
             ragdolls = GetComponentsInChildren<Rigidbody>();
             agent = GetComponent<NavMeshAgent>();
             audioSource = GetComponent<AudioSource>();
-            localPlayer = GameObject.FindGameObjectWithTag("Player").transform;
             DisableRagdoll();
 
             this.GetComponent<ZombieHealth>().OnHit += () =>
             {
-                localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnHit);
+                LevelManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnHit);
             };
             this.GetComponent<ZombieHealth>().OnDie += () =>
             {
-                localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnDie);
-                localPlayer.GetComponent<PlayerStats>().AddKilledZombies(1);
+                LevelManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnDie);
+                LevelManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddKilledZombies(1);
             };
 
         }
 
-        private void OnDrawGizmos()
-        {
-            DrawGizmos(this.gameObject.transform, Radius, Angle);
-        }
+        //private void OnDrawGizmos()
+        //{
+        //    DrawGizmos(this.gameObject.transform, Radius, Angle);
+        //}
 
         public void Update()
         {
             player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
 
             SetState();
-            CheckForPotentialTarget(localPlayer);
+            CheckForPotentialTarget(LevelManager.Singleton.localPlayer.transform);
 
             if (player != null)
             {
@@ -283,8 +282,8 @@ namespace LB.AI
             player.GetComponent<PlayerHealth>().OnHit += () =>
             {
                 StartCoroutine(UIManager.Singleton.SetBloodOverlay());
-                localPlayer.GetComponent<FirstPersonController>().AudioSource.clip = localPlayer.GetComponent<FirstPersonController>().hitSound;
-                localPlayer.GetComponent<FirstPersonController>().AudioSource.Play();
+                LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().AudioSource.clip = LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().hitSound;
+                LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().AudioSource.Play();
             };
 
             player.GetComponent<PlayerHealth>().GiveDamage(Damage);

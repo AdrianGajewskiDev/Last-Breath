@@ -18,7 +18,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
         [SerializeField] private float m_JumpSpeed = 0f;
         [SerializeField] private float m_StickToGroundForce;
         [SerializeField] private float m_GravityMultiplier = 0;
-        [SerializeField] private MouseLook m_MouseLook = null;
         [SerializeField] private bool m_UseFovKick = true;
         [SerializeField] private bool m_UseHeadBob;
         [SerializeField] private CurveControlledBob m_HeadBob = new CurveControlledBob();
@@ -30,6 +29,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public AudioClip hitSound;
 
+        public  MouseLook MouseLook = null;
         public Camera m_Camera;
         private bool m_Jump;
         private float m_YRotation;
@@ -55,7 +55,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
             m_NextStep = m_StepCycle/2f;
             m_Jumping = false;
             AudioSource = GetComponent<AudioSource>();
-			m_MouseLook.Init(transform , m_Camera.transform);
+			MouseLook.Init(transform , m_Camera.transform);
 
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
@@ -241,7 +241,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void RotateView()
         {
-            m_MouseLook.LookRotation (transform, m_Camera.transform);
+            MouseLook.LookRotation (transform, m_Camera.transform);
         }
 
 

@@ -13,6 +13,11 @@ namespace LB.UI
         public Slider WeaponVolumeSlider;
         public Toggle bypassEffects;
 
+
+        float currentVolume;
+        float currentPitch;
+        float currentWeaponVolume;
+
         void SetVolume()
         {
             mainAudioSource.volume = volumeSlider.value;
