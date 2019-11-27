@@ -25,7 +25,6 @@ namespace LB.AI
         public float zombieScoreAmountOnDie;
         [HideInInspector] public float Speed;
         public IList<Transform> _waypoints = new List<Transform>();
-        bool hasPath = false;
 
         [Header("FOV")]
         public float Angle;

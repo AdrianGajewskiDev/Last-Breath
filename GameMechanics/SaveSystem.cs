@@ -3,7 +3,7 @@ using System.IO;
 
 namespace LB.GameMechanics
 {
-    public class SaveSystem : MonoBehaviour
+    public class SaveSystem 
     {
 
         public static void SaveOptions_Controll(float mouseSensitivityX,
@@ -26,14 +26,6 @@ namespace LB.GameMechanics
             File.WriteAllText(optionsPath, jsonData);
         }
 
-        public static OptionsUtility_Controlls LoadOptions_Controlls()
-        {
-            string json = File.ReadAllText(Application.streamingAssetsPath + "/ControllOptions.json");
-            var result = JsonUtility.FromJson<OptionsUtility_Controlls>(json);
-            return result;
-        }
-
-
         public static void SaveOptions_Graphic(float lightIntensity, float shadowStrength, int qualityLevel, int[] currentResolution)
         {
             string optionsPath = Application.streamingAssetsPath + "/GraphicOptions.json";
@@ -51,11 +43,36 @@ namespace LB.GameMechanics
             File.WriteAllText(optionsPath, jsonData);
         }
 
-        public static OptionsUtility_Graphic LoadOptions_Graphic()
+        public static T LoadOptions<T>(OptionsType optionsType)
         {
-            string json = File.ReadAllText(Application.streamingAssetsPath + "/GraphicOptions.json");
-            var result = JsonUtility.FromJson<OptionsUtility_Graphic>(json);
-            return result;
+            string json = string.Empty;
+
+            switch (optionsType)
+            {
+                case OptionsType.Controll:
+                    {
+                        json = File.ReadAllText(Application.streamingAssetsPath + "/ControllOptions.json");
+                    }
+                    break;
+
+                case OptionsType.Graphic:
+                    {
+                        json = Application.streamingAssetsPath + "/GraphicOptions.json";
+                    }
+                    break;
+
+                case OptionsType.Sounds:
+                    {
+                        json = Application.streamingAssetsPath + "/SoundsOptions.json";
+
+                    }
+                    break;
+            }
+
+            var result = JsonUtility.FromJson<T>(json);
+
+
+            return (T)result;
         }
     }
 }

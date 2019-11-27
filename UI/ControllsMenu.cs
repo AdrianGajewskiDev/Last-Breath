@@ -25,7 +25,7 @@ namespace LB.UI
             if (playerController == null)
                 Debug.Log("Player not found!!");
 
-            var options = SaveSystem.LoadOptions_Controlls();
+            var options = SaveSystem.LoadOptions<OptionsUtility_Controlls>(OptionsType.Controll);
 
             MSXSlider.value = options.MouseSensitivityX;
             MSYSlider.value = options.MouseSensitivityY;
