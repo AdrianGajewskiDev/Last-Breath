@@ -1,4 +1,5 @@
 ﻿using LB.Player;
+using LB.Player.Inventory;
 using UnityEngine;
 
 namespace LB.GameMechanics

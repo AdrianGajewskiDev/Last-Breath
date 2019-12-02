@@ -9,7 +9,8 @@ namespace LB.GameMechanics
         public static void SaveOptions_Controll(float mouseSensitivityX,
         float mouseSensitivityY,
         float controllerSensitivityX,
-        float controllerSensitivityY)
+        float controllerSensitivityY,
+        string inputType)
         {
             string optionsPath = Application.streamingAssetsPath + "/ControllOptions.json";
 
@@ -18,7 +19,8 @@ namespace LB.GameMechanics
                 MouseSensitivityX = mouseSensitivityX,
                 MouseSensitivityY = mouseSensitivityY,
                 ControllerSensitivityX = controllerSensitivityX,
-                ControllerSensitivityY = controllerSensitivityY
+                ControllerSensitivityY = controllerSensitivityY,
+                InputType = inputType
             };
 
             var jsonData = JsonUtility.ToJson(options);
@@ -43,7 +45,26 @@ namespace LB.GameMechanics
             File.WriteAllText(optionsPath, jsonData);
         }
 
-        public static T LoadOptions<T>(OptionsType optionsType)
+        public static void SaveOptions_Sound( float VolumeSlider, float PitchSlider, float WeaponVolumeSlider, bool BypassEffects)
+        {
+            
+
+            string optionsPath = Application.streamingAssetsPath + "/SoundsOptions.json";
+
+            var options = new OptionsUtility_Sounds
+            {
+                BypassEffects = BypassEffects,
+                PitchSlider = PitchSlider,
+                WeaponVolumeSlider = WeaponVolumeSlider,
+                VolumeSlider = VolumeSlider
+            };
+            
+            var jsonData = JsonUtility.ToJson(options);
+
+            File.WriteAllText(optionsPath, jsonData);
+        }
+
+        public static T LoadOptions<T>(OptionsType optionsType) where T : struct
         {
             string json = string.Empty;
 
@@ -57,13 +78,13 @@ namespace LB.GameMechanics
 
                 case OptionsType.Graphic:
                     {
-                        json = Application.streamingAssetsPath + "/GraphicOptions.json";
+                        json = File.ReadAllText(Application.streamingAssetsPath + "/GraphicOptions.json");
                     }
                     break;
 
                 case OptionsType.Sounds:
                     {
-                        json = Application.streamingAssetsPath + "/SoundsOptions.json";
+                        json = File.ReadAllText(Application.streamingAssetsPath + "/SoundsOptions.json");
 
                     }
                     break;

@@ -1,5 +1,6 @@
 ﻿using LB.GameMechanics;
 using LB.Player;
+using LB.Player.Inventory;
 using LB.UI;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;

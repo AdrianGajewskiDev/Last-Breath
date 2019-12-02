@@ -1,4 +1,5 @@
 ﻿using LB.GameMechanics;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityStandardAssets.Characters.FirstPerson;
@@ -31,11 +32,12 @@ namespace LB.UI
             MSYSlider.value = options.MouseSensitivityY;
             ControllerSXSlider.value = options.ControllerSensitivityX;
             ControllerSYSlider.value = options.ControllerSensitivityY;
+            inputType = (InputType)Enum.Parse(typeof(InputType), options.InputType);
         }
 
         public void SaveOptions()
         {
-            SaveSystem.SaveOptions_Controll(MSXSlider.value, MSYSlider.value, ControllerSXSlider.value, ControllerSYSlider.value);
+            SaveSystem.SaveOptions_Controll(MSXSlider.value, MSYSlider.value, ControllerSXSlider.value, ControllerSYSlider.value, inputType.ToString());
         }
 
         private void Update()

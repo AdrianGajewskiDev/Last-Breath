@@ -7,7 +7,6 @@ namespace LB.GameMechanics
 {
     public class ZombiesManager : MonoBehaviour
     {
-        public List<GameObject> Zombies = new List<GameObject>();
         public List<GameObject> ZombiesPrefabs = new List<GameObject>();
 
         public Transform[] spawnPoints;
@@ -21,19 +20,12 @@ namespace LB.GameMechanics
             Singleton = this;
         }
 
-        private void Awake()
-        {
-            Zombies = GameObject.FindGameObjectsWithTag("Zombie").ToList();
-        }
-
-        private void Update()
-        {
-            Zombies = GameObject.FindGameObjectsWithTag("Zombie").ToList();
-        }
 
         public void DestroyAllZombies()
         {
-            foreach (var zombie in Zombies)
+            var zombies = GameObject.FindGameObjectsWithTag("Zombie");
+
+            foreach (var zombie in zombies)
             {
                 Destroy(zombie);
             }

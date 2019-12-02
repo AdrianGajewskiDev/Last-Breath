@@ -5,9 +5,8 @@ namespace LB.GameMechanics
     {
         public int LevelNumber = 1;
         public int ZombiesToSpawnNumber;
-        public int ZombiesLeft => ZombiesManager.Singleton.Zombies.Count;
 
-        public bool LevelFinished => ZombiesLeft <= 0;
+        public bool LevelFinished => LevelManager.Singleton.ZombiesCount == 0;
 
         public void IncreaseLevel()
         {

@@ -1,5 +1,6 @@
 ﻿using LB.InputControllers;
 using LB.Player;
+using LB.Player.Inventory;
 using LB.UI;
 using UnityEngine;
 

@@ -25,13 +25,14 @@ namespace LB.Health
 
         public void Die()
         {
-            if (IsDead())
-            {
-                animator.SetBool("Died", true);
-                GetComponent<ZombieAI>().enabled = false;
-                GetComponent<AudioSource>().Stop();
-                Destroy(gameObject, 5);
-            }
+            if (!IsDead())
+                return;
+
+            animator.SetBool("Died", true);
+            GetComponent<ZombieAI>().enabled = false;
+            GetComponent<AudioSource>().Stop();
+            Destroy(gameObject, 5);
+
 
         }
 

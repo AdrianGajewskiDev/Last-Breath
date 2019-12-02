@@ -1,6 +1,7 @@
 ﻿using LB.GameMechanics;
 using LB.Health;
 using LB.Player;
+using LB.Player.Inventory;
 using LB.UI;
 using System.Collections.Generic;
 using UnityEngine;
@@ -76,6 +77,7 @@ namespace LB.AI
 
         private void Awake()
         {
+            LevelManager.Singleton.ZombiesCount += 1;
             SetWaypoints();
             animator = GetComponent<Animator>();
             ragdolls = GetComponentsInChildren<Rigidbody>();
@@ -91,6 +93,7 @@ namespace LB.AI
             {
                 LevelManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnDie);
                 LevelManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddKilledZombies(1);
+                LevelManager.Singleton.ZombiesCount -= 1;
             };
 
         }

@@ -1,6 +1,7 @@
 ﻿using LB.GameMechanics;
 using LB.InputControllers;
 using LB.Player;
+using LB.Player.Inventory;
 using LB.Weapons;
 using System.Collections;
 using UnityEngine;
@@ -35,13 +36,13 @@ namespace LB.UI
         [SerializeField] RawImage bloodOverlay;
 
         [SerializeField] Image DeathScreen;
+        public Image BatteryStatus;
 
         public Text MessageDisplayer;
 
         bool showStatsMenu = false;
         bool showPauseMenu = false;
-        bool showOptionsMenu = false;
-
+        bool showBatteryStatus = false;
 
         private void Awake()
         {
@@ -133,6 +134,16 @@ namespace LB.UI
                 PauseMenuSlideOut();
             }
 
+            if (InputController.UseItem && showBatteryStatus == false)
+            {
+                BatteryStatus.enabled = true;
+                showBatteryStatus = true;
+            }
+            else if (InputController.UseItem && showBatteryStatus == true)
+            {
+                BatteryStatus.enabled = false;
+                showBatteryStatus = false;
+            }
         }
     }
 

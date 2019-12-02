@@ -15,6 +15,7 @@ namespace LB.InputControllers
         public static bool ShowStats;
         public static bool ShowPauseMenu;
         public static bool PickUpItem;
+        public static bool UseItem;
 
         #region Xbox_One_Input
         public static float Xbox_Vertical_Right_Thumbstick;
@@ -39,6 +40,7 @@ namespace LB.InputControllers
             ShowStats = Input.GetKeyDown(KeyCode.Tab);
             ShowPauseMenu = Input.GetKeyDown(KeyCode.Escape);
             PickUpItem = Input.GetKeyDown(KeyCode.F);
+            UseItem = Input.GetKeyDown(KeyCode.Q);
 
             //Xbox one
             Xbox_Vertical_Right_Thumbstick = Input.GetAxis("Vertical_Right_Thumbstick");

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace LB.Player
+namespace LB.Player.Inventory
 {
     public class PlayerInventoryManager : MonoBehaviour
     {
@@ -16,7 +16,9 @@ namespace LB.Player
 
         public List<Weapon> Weapons = new List<Weapon>();
 
-        [SerializeField] private List<GameObject> hands;
+        private List<GameObject> hands;
+
+        public List<IInventoryItem> inventoryItems = new List<IInventoryItem>();
 
         int currentWeaponIndex = 0;
 
@@ -70,6 +72,7 @@ namespace LB.Player
             Singleton = this;
 
             hands = GameObject.FindGameObjectsWithTag("Hand").ToList();
+            inventoryItems.Add(GetComponentInChildren<Flashlight>());
 
             foreach (GameObject hand in hands)
             {
@@ -93,6 +96,7 @@ namespace LB.Player
                 ChangeWeapon();
 
             SetCurrentWeapon(currentWeaponIndex);
+
         }
     }
 
