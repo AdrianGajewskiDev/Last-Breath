@@ -24,12 +24,23 @@ namespace LB.GameMechanics
         void Start()
         {
             Singleton = this;
-            currentLevel.ZombiesToSpawnNumber = ZombiesToSpawnNumber;
-            CurrentLevel = currentLevel.LevelNumber;
-            ZombiesManager.Singleton.SpawnZombies(currentLevel.ZombiesToSpawnNumber);
+
+            if(GameManager.Singleton.GameMode == GameMode.Survival)
+            {
+                currentLevel.ZombiesToSpawnNumber = ZombiesToSpawnNumber;
+                CurrentLevel = currentLevel.LevelNumber;
+                ZombiesManager.Singleton.SpawnZombies(currentLevel.ZombiesToSpawnNumber);
+            }
+            
         }
 
         private void Update()
+        {
+            if (GameManager.Singleton.GameMode == GameMode.Survival)
+                SurvivalMode();
+        }
+
+        void SurvivalMode()
         {
             CurrentLevel = currentLevel.LevelNumber;
 

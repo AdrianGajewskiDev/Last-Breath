@@ -8,7 +8,7 @@ namespace LB.Health
     {
         public float MaxHealth;
 
-        float currentHealth;
+        public float currentHealth;
 
         Animator animator;
 

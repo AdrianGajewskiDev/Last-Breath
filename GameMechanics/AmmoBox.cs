@@ -17,9 +17,13 @@ namespace LB.GameMechanics
 
         private void OnTriggerEnter(Collider other)
         {
-            PlayerInventoryManager.Singleton.CurrentWeapon.MaxAmmo += AmmoAmount;
-            audioSource.Play();
-            Destroy(gameObject, .3f);
+            if (PlayerInventoryManager.Singleton.CurrentWeapon != null)
+            {
+                PlayerInventoryManager.Singleton.CurrentWeapon.MaxAmmo += AmmoAmount;
+                audioSource.Play();
+                Destroy(this.gameObject, .3f);
+            }
+            
         }
     }
 

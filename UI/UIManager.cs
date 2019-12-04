@@ -70,7 +70,10 @@ namespace LB.UI
             LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().enabled = false;
             showPauseMenu = true;
             Crosshair.Singleton.HideCrosshair = true;
-            PlayerInventoryManager.Singleton.CurrentWeapon.GetComponent<Weapon>().enabled = false;
+            if (PlayerInventoryManager.Singleton.CurrentWeapon != null)
+            {
+                PlayerInventoryManager.Singleton.CurrentWeapon.GetComponent<Weapon>().enabled = false;
+            }
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
             pauseMenuPanel.GetComponent<Animation>().Play("PauseMenuSlideIn");
@@ -81,7 +84,10 @@ namespace LB.UI
 
             Crosshair.Singleton.HideCrosshair = false;
             showPauseMenu = false;
-            PlayerInventoryManager.Singleton.CurrentWeapon.GetComponent<Weapon>().enabled = true;
+            if (PlayerInventoryManager.Singleton.CurrentWeapon != null)
+            {
+                PlayerInventoryManager.Singleton.CurrentWeapon.GetComponent<Weapon>().enabled = true;
+            }
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             pauseMenuPanel.GetComponent<Animation>().Play("PauseMenuSlideOut");
@@ -111,7 +117,15 @@ namespace LB.UI
 
         private void UpdateIU()
         {
-            AmmoDisplayer.text = $"{PlayerInventory.CurrentWeapon.CurrentAmmoInClip} / {PlayerInventory.CurrentWeapon.MaxAmmo}";
+            if(PlayerInventory.CurrentWeapon == null)
+            {
+                AmmoDisplayer.text = "-/-";
+            }
+            else
+            {
+                AmmoDisplayer.text = $"{PlayerInventory.CurrentWeapon.CurrentAmmoInClip} / {PlayerInventory.CurrentWeapon.MaxAmmo}";
+            }
+            
             ScoreDisplayer.text = $"Score: {PlayerStats.Singleton.Score}";
             ZombieKilled.text = $"Zombies Killed: {PlayerStats.Singleton.KilledZombies}";
             LevelCounter.text = $"Level: {LevelManager.Singleton.CurrentLevel}";

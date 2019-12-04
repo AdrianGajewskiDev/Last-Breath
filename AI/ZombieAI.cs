@@ -63,7 +63,7 @@ namespace LB.AI
 
         [SerializeField] ZombieState state;
 
-        Transform player;
+        [HideInInspector] public Transform player;
 
         void SetWaypoints()
         {
@@ -75,9 +75,8 @@ namespace LB.AI
             }
         }
 
-        private void Awake()
+        private void Start()
         {
-            LevelManager.Singleton.ZombiesCount += 1;
             SetWaypoints();
             animator = GetComponent<Animator>();
             ragdolls = GetComponentsInChildren<Rigidbody>();
@@ -96,6 +95,7 @@ namespace LB.AI
                 LevelManager.Singleton.ZombiesCount -= 1;
             };
 
+            LevelManager.Singleton.ZombiesCount += 1;
         }
 
         //private void OnDrawGizmos()
@@ -106,7 +106,6 @@ namespace LB.AI
         public void Update()
         {
             player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
-
             SetState();
             CheckForPotentialTarget(LevelManager.Singleton.localPlayer.transform);
 
@@ -143,7 +142,8 @@ namespace LB.AI
 
             AttackPlayer();
 
-            playerWeaponSounds = PlayerInventoryManager.Singleton.CurrentWeapon.transform.GetComponent<AudioSource>();
+            if (PlayerInventoryManager.Singleton.CurrentWeapon != null)
+                playerWeaponSounds = PlayerInventoryManager.Singleton.CurrentWeapon.transform.GetComponent<AudioSource>();
         }
 
         //Check if zombie don't see player but can hear him
@@ -153,8 +153,12 @@ namespace LB.AI
                 return;
             var distance = Vector3.Distance(gameObject.transform.position, target.position);
 
-            if (distance <= Radius && playerWeaponSounds.isPlaying)
-                player = target;
+            if(PlayerInventoryManager.Singleton.CurrentWeapon != null)
+            {
+                if (distance <= Radius && playerWeaponSounds.isPlaying)
+                    player = target;
+            }
+            
         }
 
         void SetUpNavMeshAgent(bool enabled)
@@ -281,14 +285,20 @@ namespace LB.AI
 
         public void GiveDamageToPlayer()
         {
-            player.GetComponent<PlayerHealth>().OnHit += () =>
-            {
-                StartCoroutine(UIManager.Singleton.SetBloodOverlay());
-                LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().AudioSource.clip = LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().hitSound;
-                LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().AudioSource.Play();
-            };
+            var distanceToPlayer = Vector3.Distance(gameObject.transform.position, player.transform.position);
 
-            player.GetComponent<PlayerHealth>().GiveDamage(Damage);
+            if ( distanceToPlayer <= distanceToAttack)
+            {
+                player.GetComponent<PlayerHealth>().OnHit += () =>
+                {
+                    StartCoroutine(UIManager.Singleton.SetBloodOverlay());
+                    LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().AudioSource.clip = LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().hitSound;
+                    LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().AudioSource.Play();
+                };
+
+                player.GetComponent<PlayerHealth>().GiveDamage(Damage);
+            }
+            
         }
 
         void PlaySoundEffects(ZombieState state)

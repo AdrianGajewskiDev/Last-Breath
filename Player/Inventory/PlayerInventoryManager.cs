@@ -1,5 +1,6 @@
 ﻿using LB.InputControllers;
 using LB.Weapons;
+using LB.Weapons.Knife;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,6 +20,8 @@ namespace LB.Player.Inventory
         private List<GameObject> hands;
 
         public List<IInventoryItem> inventoryItems = new List<IInventoryItem>();
+
+        public Knife Knife;
 
         int currentWeaponIndex = 0;
 
@@ -95,7 +98,15 @@ namespace LB.Player.Inventory
             if (HasSecondaryWeapon())
                 ChangeWeapon();
 
-            SetCurrentWeapon(currentWeaponIndex);
+            if(Weapons.Any())
+            {
+                Knife.gameObject.SetActive(false);
+                SetCurrentWeapon(currentWeaponIndex);
+            }
+            else 
+            {
+                Knife.gameObject.SetActive(true);
+            }
 
         }
     }
