@@ -1,28 +1,16 @@
-﻿using LB.UI;
+﻿using LB.GameMechanics;
+using LB.UI;
 using UnityEngine;
 
 namespace LB.Player.Inventory
 {
-    public class Battery : MonoBehaviour
+    public class Battery : MonoBehaviour, IPickupAble
     {
-        void OnTriggerEnter(Collider other)
+        public void Execute()
         {
-            UIManager.Singleton.MessageDisplayer.text = "Pick up a battery [F]";    
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            if(InputControllers.InputController.PickUpItem)
-            {
-                other.GetComponentInChildren<Flashlight>().LoadBattery();
-                UIManager.Singleton.MessageDisplayer.text = string.Empty;
-                Destroy(gameObject);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
+            LevelManager.Singleton.localPlayer.GetComponentInChildren<Flashlight>().LoadBattery();
             UIManager.Singleton.MessageDisplayer.text = string.Empty;
+            Destroy(gameObject);
         }
     }
 }

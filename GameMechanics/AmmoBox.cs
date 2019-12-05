@@ -5,7 +5,7 @@ using UnityEngine;
 namespace LB.GameMechanics
 {
     [RequireComponent(typeof(AudioSource))]
-    public class AmmoBox : MonoBehaviour
+    public class AmmoBox : MonoBehaviour, IPickupAble
     {
         private AudioSource audioSource;
         public int AmmoAmount;
@@ -15,7 +15,7 @@ namespace LB.GameMechanics
             audioSource = GetComponent<AudioSource>();
         }
 
-        private void OnTriggerEnter(Collider other)
+        public void Execute()
         {
             if (PlayerInventoryManager.Singleton.CurrentWeapon != null)
             {
@@ -23,7 +23,6 @@ namespace LB.GameMechanics
                 audioSource.Play();
                 Destroy(this.gameObject, .3f);
             }
-            
         }
     }
 

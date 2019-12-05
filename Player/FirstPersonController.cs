@@ -1,3 +1,4 @@
+using LB.GameMechanics;
 using LB.InputControllers;
 using LB.UI;
 using System;
@@ -43,6 +44,9 @@ namespace UnityStandardAssets.Characters.FirstPerson
         private float m_NextStep;
         private bool m_Jumping;
         public AudioSource AudioSource;
+
+
+        RaycastHit hit;
 
         // Use this for initialization
         private void Start()
@@ -99,6 +103,24 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         private void FixedUpdate()
         {
+            var direction = m_Camera.transform.forward;
+            var origin = m_Camera.transform.position;
+
+            if(Physics.Raycast(origin, direction, out hit, 5f))
+            {
+
+                if (hit.transform.GetComponent<IPickupAble>() != null)
+                {
+                    UIManager.Singleton.MessageDisplayer.text = $"Pick up a {hit.transform.name} [F]";
+                    if(InputController.PickUpItem)
+                        hit.transform.GetComponent<IPickupAble>().Execute();
+                }
+                else
+                    UIManager.Singleton.MessageDisplayer.text = string.Empty;
+
+            }
+
+
             float speed;
             GetInput(out speed);
             // always move along the camera forward as it is the direction that it being aimed at

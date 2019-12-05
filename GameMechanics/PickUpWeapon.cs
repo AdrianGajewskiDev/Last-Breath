@@ -6,30 +6,16 @@ using UnityEngine;
 
 namespace LB.GameMechanics
 {
-    public class PickUpWeapon : MonoBehaviour
+    public class PickUpWeapon : MonoBehaviour, IPickupAble
     {
         public GameObject WeaponPrefab;
 
-        private void OnTriggerEnter(Collider col)
+        public void Execute()
         {
 
-            UIManager.Singleton.MessageDisplayer.text = $"Pick up a {gameObject.name} [F]";
-
-        }
-
-        private void OnTriggerStay(Collider other)
-        {
-            if (InputController.PickUpItem)
-            {
-                PlayerInventoryManager.Singleton.AddWeapon(WeaponPrefab);
-                UIManager.Singleton.MessageDisplayer.text = string.Empty;
-                Destroy(gameObject, 1f);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
-        {
+            PlayerInventoryManager.Singleton.AddWeapon(WeaponPrefab);
             UIManager.Singleton.MessageDisplayer.text = string.Empty;
+            Destroy(gameObject, 1f);
         }
     }
 
