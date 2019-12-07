@@ -148,7 +148,7 @@ namespace LB.UI
                 PauseMenuSlideOut();
             }
 
-            if (InputController.UseItem && showBatteryStatus == false)
+            if (InputController.UseItem && showBatteryStatus == false) 
             {
                 BatteryStatus.enabled = true;
                 showBatteryStatus = true;
@@ -158,6 +158,7 @@ namespace LB.UI
                 BatteryStatus.enabled = false;
                 showBatteryStatus = false;
             }
+
         }
     }
 

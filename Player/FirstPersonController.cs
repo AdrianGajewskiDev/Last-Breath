@@ -90,6 +90,8 @@ namespace UnityStandardAssets.Characters.FirstPerson
             }
 
             m_PreviouslyGrounded = m_CharacterController.isGrounded;
+
+            MakeFootstepsVolumeQuieter();
         }
 
 
@@ -98,6 +100,15 @@ namespace UnityStandardAssets.Characters.FirstPerson
             AudioSource.clip = m_LandSound;
             AudioSource.Play();
             m_NextStep = m_StepCycle + .5f;
+        }
+
+        void MakeFootstepsVolumeQuieter()
+        {
+            if (IsWalking)
+                AudioSource.volume = .2f;
+            else
+                AudioSource.volume = 1f;
+
         }
 
 
@@ -119,7 +130,6 @@ namespace UnityStandardAssets.Characters.FirstPerson
                     UIManager.Singleton.MessageDisplayer.text = string.Empty;
 
             }
-
 
             float speed;
             GetInput(out speed);

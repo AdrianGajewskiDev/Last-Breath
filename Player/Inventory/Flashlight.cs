@@ -16,6 +16,8 @@ namespace LB.Player.Inventory
 
         AudioSource m_AudioSource;
 
+        public static bool EmptyBattery;
+
         bool isOn = false;
 
         /// <summary>
@@ -48,6 +50,7 @@ namespace LB.Player.Inventory
 
         public void LoadBattery()
         {
+            EmptyBattery = false;
             batteryCharge = MAX_BATTERY_CHARGE;
         }
 
@@ -99,7 +102,7 @@ namespace LB.Player.Inventory
         private void Update()
         {
 
-            if (InputController.UseItem && isOn == false)
+            if (InputController.UseItem && isOn == false && batteryStatus != BatteryStatus.empty)
             {
                 isOn = true;
                 m_AudioSource.PlayOneShot(switchOnOffSound);
@@ -116,7 +119,10 @@ namespace LB.Player.Inventory
                 m_AudioSource.PlayOneShot(lowBattery);
 
             if (batteryCharge <= 0)
+            {
+                EmptyBattery = true;
                 DisableFlashlight();
+            }
 
 
             SetBatteryStatus();
