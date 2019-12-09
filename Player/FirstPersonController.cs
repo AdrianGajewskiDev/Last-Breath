@@ -122,7 +122,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
                 if (hit.transform.GetComponent<IPickupAble>() != null)
                 {
-                    UIManager.Singleton.MessageDisplayer.text = $"Pick up a {hit.transform.name} [F]";
+                    UIManager.Singleton.MessageDisplayer.text = "Start your first quest [F]";
                     if(InputController.PickUpItem)
                         hit.transform.GetComponent<IPickupAble>().Execute();
                 }

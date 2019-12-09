@@ -17,12 +17,24 @@ namespace LB.Quests
         private void Awake()
         {
             Singleton = this;
-            if(currentQuest != null)
-                currentQuest.currentQuestGoal = currentQuest.QuestGoals[0];
+           
         }
 
         private void Update()
         {
+            if (availableQuests.Count != 0)
+                currentQuest = availableQuests[0];
+
+
+            if (currentQuest != null)
+                currentQuest.currentQuestGoal = currentQuest.QuestGoals[0];
+
+
+            if (availableQuests.Count != 0)
+            {
+                currentQuest = availableQuests[0];
+            }
+
             if(currentQuest != null)
             {
                 questNameText.text = currentQuest.Name;

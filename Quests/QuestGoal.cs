@@ -21,13 +21,14 @@ namespace LB.Quests
 
         public bool Finished()
         {
+
             bool result = false;
 
             switch (QuestGoalType)
             {
                 case QuestGoalType.GoToPoint:
                     {
-                        if (DestinationReached())
+                        if (DestinationReached(CheckPoint))
                             result = true;
                     }break;
                 case QuestGoalType.PickUpItem:
@@ -50,12 +51,14 @@ namespace LB.Quests
 
         public void OnFinish()
         {
-            Debug.Log("Finished Quest");
             this.CheckPoint.gameObject.SetActive(false);
             CustomBehaviourOnFinish?.Invoke();
         }
 
-        bool DestinationReached() => Vector3.Distance(CheckPoint.position, LevelManager.Singleton.localPlayer.transform.position) <= 2f;
+        bool DestinationReached(Transform d)
+        {
+            return Vector3.Distance(d.position, LevelManager.Singleton.localPlayer.transform.position) <= 2f;
+        }
         bool PickedUpItem(IInventoryItem item) => PlayerInventoryManager.Singleton.inventoryItems.Contains(item);
         bool TargetKilled() => targetToKill.IsDead();
 
