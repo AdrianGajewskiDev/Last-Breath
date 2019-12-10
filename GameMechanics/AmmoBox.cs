@@ -24,6 +24,10 @@ namespace LB.GameMechanics
                 Destroy(this.gameObject, .3f);
             }
         }
+
+        public Type ItemType() => Type.Item;
+
+        public string GetName() => "Pick up a ammo";
     }
 
 }

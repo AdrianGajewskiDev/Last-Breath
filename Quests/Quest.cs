@@ -12,12 +12,12 @@ namespace LB.Quests
 
         public List<QuestGoal> QuestGoals;
         [HideInInspector] public QuestGoal currentQuestGoal;
+
+        
         public bool QuestGoalFinished(QuestGoal goal)
         {
             return goal.Finished();
         }
-
-        int currentQuestGoalIndex = 0;
 
         public void Init()
         {
@@ -27,41 +27,27 @@ namespace LB.Quests
 
         private void Update()
         {
-
             if (QuestGoalFinished(currentQuestGoal))
             {
                 currentQuestGoal.OnFinish();
-
-                if (QuestGoals.Count > 1)
-                {
-                    currentQuestGoalIndex += 1;
-                    currentQuestGoal = QuestGoals[currentQuestGoalIndex];
-                }
+                QuestGoals.RemoveAt(QuestGoals.IndexOf(currentQuestGoal));
             }
 
-
-            Debug.Log(PlayerQuestsManager.Singleton.availableQuests.IndexOf(this));
+            if (QuestGoals.Count != 0)
+                currentQuestGoal = QuestGoals[0];
 
             if (QuestFinished())
             {
                 StartCoroutine( UIManager.Singleton.ShowQuestEndScreen(Name));
                 PlayerQuestsManager.Singleton.availableQuests.RemoveAt(PlayerQuestsManager.Singleton.availableQuests.IndexOf(this));
-                Destroy(this.transform.parent.gameObject, 2f);
+                Destroy(this.transform.parent.gameObject);
             }
-
         }
+
 
         bool QuestFinished()
         {
-            int num = 0;
-
-            foreach (var q in QuestGoals)
-            {
-                if (q.Finished())
-                    num += 1;
-            }
-
-            return num == QuestGoals.Count;
+            return QuestGoals.Count == 0;
         }
     }
 

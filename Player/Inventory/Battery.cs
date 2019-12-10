@@ -12,5 +12,9 @@ namespace LB.Player.Inventory
             UIManager.Singleton.MessageDisplayer.text = string.Empty;
             Destroy(gameObject);
         }
+
+        public string GetName() => "Pick up a battery";
+
+        public Type ItemType() => Type.Item;
     }
 }

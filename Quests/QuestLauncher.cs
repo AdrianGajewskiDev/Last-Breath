@@ -11,6 +11,10 @@ namespace LB.Quests
         {
             quest.Init();
         }
+
+        public string GetName() => $"Start a {quest.Name} quest";
+
+        public Type ItemType() => Type.Quest;
     }
 	
 }

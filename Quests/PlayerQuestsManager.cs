@@ -38,13 +38,14 @@ namespace LB.Quests
             if(currentQuest != null)
             {
                 questNameText.text = currentQuest.Name;
-                questGoalDescriptionText.text = currentQuest.currentQuestGoal.Description;
+
+                if(currentQuest.QuestGoals.Count != 0)
+                    questGoalDescriptionText.text = currentQuest.currentQuestGoal.Description;
             }
             else
             {
                 questNameText.text = string.Empty;
                 questGoalDescriptionText.text = string.Empty;
-
             }
 
         }
