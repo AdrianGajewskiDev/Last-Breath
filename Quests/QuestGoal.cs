@@ -14,7 +14,7 @@ namespace LB.Quests
         /// Quest targets
         /// </summary>
         public Transform CheckPoint;
-        public IInventoryItem itemToPickUp;
+        public QuestItem itemToPickUp;
         public ZombieHealth targetToKill;
 
         public QuestGoalType QuestGoalType;
@@ -51,15 +51,18 @@ namespace LB.Quests
 
         public void OnFinish()
         {
-            this.CheckPoint.gameObject.SetActive(false);
             CustomBehaviourOnFinish?.Invoke();
+
+            if (this.CheckPoint != null)
+                this.CheckPoint.gameObject.SetActive(false);
+
         }
 
         bool DestinationReached(Transform d)
         {
             return Vector3.Distance(d.position, LevelManager.Singleton.localPlayer.transform.position) <= 2f;
         }
-        bool PickedUpItem(IInventoryItem item) => PlayerInventoryManager.Singleton.inventoryItems.Contains(item);
+        bool PickedUpItem(IInventoryItem item) => PlayerInventoryManager.Singleton.questItems.Contains(item);
         bool TargetKilled() => targetToKill.IsDead();
 
         public event System.Action CustomBehaviourOnFinish;

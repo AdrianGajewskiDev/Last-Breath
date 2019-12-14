@@ -21,12 +21,17 @@ namespace LB.Health
             ResetHealth();
         }
 
+        public int GetMaxHealth() => maxHealth;
+        public int GetCurrentHealth() => currentHealth;
+
         public void GiveDamage(int ammount)
         {
             currentHealth -= ammount;
 
             OnHit?.Invoke();
         }
+
+        public void AddHealth(int h) => currentHealth += h;
 
         public bool IsDead() => currentHealth <= 0;
 
@@ -37,6 +42,8 @@ namespace LB.Health
 
         void Update()
         {
+
+
             if (IsDead())
                 Die();
         }

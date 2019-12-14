@@ -95,7 +95,8 @@ namespace LB.AI
                 LevelManager.Singleton.ZombiesCount -= 1;
             };
 
-            LevelManager.Singleton.ZombiesCount += 1;
+            if(GameManager.Singleton.GameMode == GameMode.Survival)
+                LevelManager.Singleton.ZombiesCount += 1;
         }
 
         //private void OnDrawGizmos()

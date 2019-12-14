@@ -20,6 +20,7 @@ namespace LB.Player.Inventory
         private List<GameObject> hands;
 
         public List<IInventoryItem> inventoryItems = new List<IInventoryItem>();
+        public List<IInventoryItem> questItems = new List<IInventoryItem>();
 
         public Knife Knife;
 
@@ -103,10 +104,10 @@ namespace LB.Player.Inventory
                 Knife.gameObject.SetActive(false);
                 SetCurrentWeapon(currentWeaponIndex);
             }
-            else 
-            {
-                Knife.gameObject.SetActive(true);
-            }
+            //else 
+            //{
+            //    Knife.gameObject.SetActive(true);
+            //}
 
         }
     }

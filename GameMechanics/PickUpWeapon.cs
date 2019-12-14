@@ -1,4 +1,5 @@
-﻿using LB.Player.Inventory;
+﻿using LB.Player;
+using LB.Player.Inventory;
 using LB.UI;
 using UnityEngine;
 
@@ -10,7 +11,7 @@ namespace LB.GameMechanics
 
         public void Execute()
         {
-
+            PlayerStats.Singleton.AddEXP(3f);
             PlayerInventoryManager.Singleton.AddWeapon(WeaponPrefab);
             UIManager.Singleton.MessageDisplayer.text = string.Empty;
             Destroy(gameObject, 1f);
@@ -18,7 +19,6 @@ namespace LB.GameMechanics
 
         public string GetName() => $"Pick up a {WeaponPrefab.name}";
 
-        public Type ItemType() => Type.Item;
     }
 
 }

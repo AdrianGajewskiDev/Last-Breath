@@ -1,4 +1,5 @@
 ﻿using LB.GameMechanics;
+using LB.Health;
 using LB.InputControllers;
 using LB.Player;
 using LB.Player.Inventory;
@@ -15,7 +16,10 @@ namespace LB.UI
         #region Other Properties
         public static UIManager Singleton;
 
-        public PlayerInventoryManager PlayerInventory; 
+        public PlayerInventoryManager PlayerInventory;
+
+        public Slider healthbar;
+        public Slider EXPBar;
         #endregion
 
         #region Panels
@@ -39,6 +43,10 @@ namespace LB.UI
 
         [SerializeField] Text LevelFinText;
         [SerializeField] Text curFinQuestName;
+        [SerializeField] Text playerCurrentLevelText;
+
+        [SerializeField] Text currentEXP;
+        [SerializeField] Text EXPToReach;
 
         public Text MessageDisplayer;
         public Text PauseMenuText;
@@ -64,13 +72,21 @@ namespace LB.UI
         {
             Singleton = this;
             bloodOverlay.enabled = false;
+			
+			Screen.fullScreen = false;
         }
         private void Update()
         {
             UpdateIU();
+            UpdateHealthBar();
 
-            if (InputController.ShowStats)
-                SwitchStatsDisplayer(!showStatsMenu);
+            if(GameManager.Singleton.GameMode == GameMode.Survival)
+            {
+                if (InputController.ShowStats)
+                    SwitchStatsDisplayer(!showStatsMenu);
+
+            }
+
 
             if (InputController.ShowPauseMenu && showPauseMenu == false)
             {
@@ -147,16 +163,20 @@ namespace LB.UI
         }
         public IEnumerator ShowQuestEndScreen(string questName)
         {
-            Crosshair.Singleton.HideCrosshair = true;
             curFinQuestName.text = $"Congrats, you have just finished {questName} quest";
             questEndPanel.GetComponent<Animation>().Play();
             yield return new WaitForSeconds(5f);
-            Crosshair.Singleton.HideCrosshair = false;
         }
         private void SwitchStatsDisplayer(bool v)
         {
             statsPanel.SetActive(v);
             showStatsMenu = !showStatsMenu;
+        }
+        private void UpdateHealthBar()
+        {
+            healthbar.maxValue = LevelManager.Singleton.localPlayer.GetComponent<PlayerHealth>().GetMaxHealth();
+            healthbar.minValue = 0;
+            healthbar.value = LevelManager.Singleton.localPlayer.GetComponent<PlayerHealth>().GetCurrentHealth();
         }
         private void UpdateIU()
         {
@@ -173,6 +193,14 @@ namespace LB.UI
             ZombieKilled.text = $"Zombies Killed: {PlayerStats.Singleton.KilledZombies}";
             LevelCounter.text = $"Level: {LevelManager.Singleton.CurrentLevel}";
             LevelFinText.text = $"{LevelCounter.text}";
+            playerCurrentLevelText.text = PlayerStats.Singleton.CurrentPlayerLevel.level.ToString();
+
+            currentEXP.text = PlayerStats.Singleton.ExperiencePoint.ToString();
+            EXPToReach.text = PlayerStats.Singleton.CurrentPlayerLevel.expToReach.ToString();
+
+            EXPBar.minValue = 0;
+            EXPBar.maxValue = PlayerStats.Singleton.CurrentPlayerLevel.expToReach;
+            EXPBar.value = PlayerStats.Singleton.ExperiencePoint;
         }
         #endregion
     }

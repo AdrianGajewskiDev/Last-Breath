@@ -15,6 +15,5 @@ namespace LB.Player.Inventory
 
         public string GetName() => "Pick up a battery";
 
-        public Type ItemType() => Type.Item;
     }
 }

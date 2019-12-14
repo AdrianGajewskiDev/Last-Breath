@@ -1,8 +1,9 @@
 ﻿using LB.GameMechanics;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace LB.Quests
-{
+{															
     public class QuestLauncher : MonoBehaviour, IPickupAble
     {
 		public Quest quest;
@@ -11,10 +12,8 @@ namespace LB.Quests
         {
             quest.Init();
         }
-
         public string GetName() => $"Start a {quest.Name} quest";
 
-        public Type ItemType() => Type.Quest;
     }
 	
 }

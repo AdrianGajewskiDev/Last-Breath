@@ -25,7 +25,6 @@ namespace LB.GameMechanics
             }
         }
 
-        public Type ItemType() => Type.Item;
 
         public string GetName() => "Pick up a ammo";
     }

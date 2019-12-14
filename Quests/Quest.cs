@@ -1,12 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using LB.UI;
+using LB.GameMechanics;
+using LB.Player;
 
 namespace LB.Quests
 {
     public class Quest : MonoBehaviour
     {
         public string Name;
+        public float EXP;
         public Transform startPoint;
         public Transform endPoint;
 
@@ -38,6 +41,7 @@ namespace LB.Quests
 
             if (QuestFinished())
             {
+                PlayerStats.Singleton.AddEXP(EXP);
                 StartCoroutine( UIManager.Singleton.ShowQuestEndScreen(Name));
                 PlayerQuestsManager.Singleton.availableQuests.RemoveAt(PlayerQuestsManager.Singleton.availableQuests.IndexOf(this));
                 Destroy(this.transform.parent.gameObject);
@@ -49,6 +53,7 @@ namespace LB.Quests
         {
             return QuestGoals.Count == 0;
         }
+
     }
 
 }
