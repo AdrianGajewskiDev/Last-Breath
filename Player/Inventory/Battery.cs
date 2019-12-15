@@ -8,7 +8,7 @@ namespace LB.Player.Inventory
     {
         public void Execute()
         {
-            LevelManager.Singleton.localPlayer.GetComponentInChildren<Flashlight>().LoadBattery();
+            GameManager.Singleton.localPlayer.GetComponentInChildren<Flashlight>().LoadBattery();
             UIManager.Singleton.MessageDisplayer.text = string.Empty;
             Destroy(gameObject);
         }

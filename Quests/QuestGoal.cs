@@ -60,7 +60,7 @@ namespace LB.Quests
 
         bool DestinationReached(Transform d)
         {
-            return Vector3.Distance(d.position, LevelManager.Singleton.localPlayer.transform.position) <= 2f;
+            return Vector3.Distance(d.position, GameManager.Singleton.localPlayer.transform.position) <= 2f;
         }
         bool PickedUpItem(IInventoryItem item) => PlayerInventoryManager.Singleton.questItems.Contains(item);
         bool TargetKilled() => targetToKill.IsDead();

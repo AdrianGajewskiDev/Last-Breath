@@ -15,12 +15,12 @@ namespace LB.Health
         public event System.Action OnHit;
         public void Die()
         {
-
             ZombiesManager.Singleton.gameOver = true;
             ShowDeathScreen();
             ResetHealth();
         }
 
+        public void SetCurrentHealth(int value) => currentHealth = value;
         public int GetMaxHealth() => maxHealth;
         public int GetCurrentHealth() => currentHealth;
 
@@ -37,13 +37,11 @@ namespace LB.Health
 
         void Start()
         {
-            currentHealth = maxHealth;
+            //currentHealth = maxHealth;
         }
 
         void Update()
         {
-
-
             if (IsDead())
                 Die();
         }

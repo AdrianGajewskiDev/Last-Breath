@@ -22,7 +22,7 @@ namespace LB.UI
 
         private void Awake()
         {
-            var options = SaveSystem.LoadOptions<OptionsUtility_Sounds>(OptionsType.Sounds);
+            var options = SaveSystem.LoadOptions<VolumeOptionsSaveModel>(OptionsType.Sounds);
 
             volumeSlider.value = options.VolumeSlider;
             pitchSlider.value = options.PitchSlider;

@@ -13,13 +13,7 @@ namespace LB.GameMechanics
 
         Level currentLevel = new Level();
 
-        public GameObject localPlayer;
-
         public int ZombiesCount;
-        private void Awake()
-        {
-            localPlayer = GameObject.FindGameObjectWithTag("Player");
-        }
 
         void Start()
         {

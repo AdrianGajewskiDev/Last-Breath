@@ -5,6 +5,7 @@ namespace LB.GameMechanics
 {
     public class SaveSystem 
     {
+        #region Options
 
         public static void SaveOptions_Controll(float mouseSensitivityX,
         float mouseSensitivityY,
@@ -14,7 +15,7 @@ namespace LB.GameMechanics
         {
             string optionsPath = Application.streamingAssetsPath + "/ControllOptions.json";
 
-            OptionsUtility_Controlls options = new OptionsUtility_Controlls
+            ControllsOptionsSaveModel options = new ControllsOptionsSaveModel
             {
                 MouseSensitivityX = mouseSensitivityX,
                 MouseSensitivityY = mouseSensitivityY,
@@ -32,7 +33,7 @@ namespace LB.GameMechanics
         {
             string optionsPath = Application.streamingAssetsPath + "/GraphicOptions.json";
 
-            OptionsUtility_Graphic options = new OptionsUtility_Graphic
+            GraphicOptionsSaveModel options = new GraphicOptionsSaveModel
             {
                 currentlightIntensity = lightIntensity,
                 currentQualityLevel = qualityLevel,
@@ -45,20 +46,20 @@ namespace LB.GameMechanics
             File.WriteAllText(optionsPath, jsonData);
         }
 
-        public static void SaveOptions_Sound( float VolumeSlider, float PitchSlider, float WeaponVolumeSlider, bool BypassEffects)
+        public static void SaveOptions_Sound(float VolumeSlider, float PitchSlider, float WeaponVolumeSlider, bool BypassEffects)
         {
-            
+
 
             string optionsPath = Application.streamingAssetsPath + "/SoundsOptions.json";
 
-            var options = new OptionsUtility_Sounds
+            var options = new VolumeOptionsSaveModel
             {
                 BypassEffects = BypassEffects,
                 PitchSlider = PitchSlider,
                 WeaponVolumeSlider = WeaponVolumeSlider,
                 VolumeSlider = VolumeSlider
             };
-            
+
             var jsonData = JsonUtility.ToJson(options);
 
             File.WriteAllText(optionsPath, jsonData);
@@ -95,5 +96,36 @@ namespace LB.GameMechanics
 
             return (T)result;
         }
+        #endregion
+
+        #region Player 
+
+        public static void SavePlayerStats(int health, int level, float exp)
+        {
+            var path = Application.streamingAssetsPath + "/PlayerStats.json";
+            var stats = new PlayerStatsSaveModel 
+            {
+             CurrentHealth = health,
+             CurrentPlayerExperience = exp,
+             CurrentPlayerLevel = level
+            };
+
+            var json = JsonUtility.ToJson(stats);
+
+            File.WriteAllText(path, json);
+
+        }
+
+        public static PlayerStatsSaveModel LoadPlayerStats()
+        {
+            var json = File.ReadAllText(Application.streamingAssetsPath + "/PlayerStats.json");
+
+            var playerStats = JsonUtility.FromJson<PlayerStatsSaveModel>(json);
+
+            return playerStats;
+
+        }
+
+        #endregion
     }
 }

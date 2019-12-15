@@ -33,6 +33,11 @@ namespace LB.UI
                         UIManager.Singleton.PauseMenuText.text = "Show options";
                     }
                     break;
+                case "Save":
+                    {
+                        UIManager.Singleton.PauseMenuText.text = "Save a game progress";
+                    }
+                    break;
             }
             PlayClip(hoverSound);
 

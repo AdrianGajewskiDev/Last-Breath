@@ -2,7 +2,7 @@
 namespace LB.GameMechanics
 {
     [System.Serializable]
-    public struct OptionsUtility_Controlls
+    public struct ControllsOptionsSaveModel
     {
         public string InputType;
         public float MouseSensitivityX;

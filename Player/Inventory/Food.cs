@@ -10,7 +10,7 @@ namespace LB.Player.Inventory
 
         public void Execute()
         {
-            LevelManager.Singleton.localPlayer.GetComponent<PlayerHealth>().AddHealth(healthPoints);
+            GameManager.Singleton.localPlayer.GetComponent<PlayerHealth>().AddHealth(healthPoints);
             PlayerStats.Singleton.AddEXP(2f);
             Destroy(this.gameObject);
         }

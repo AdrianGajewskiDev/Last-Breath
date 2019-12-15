@@ -3,6 +3,7 @@ using LB.Health;
 using LB.InputControllers;
 using LB.Player;
 using LB.Player.Inventory;
+using LB.Quests;
 using LB.Weapons;
 using System.Collections;
 using UnityEngine;
@@ -28,6 +29,7 @@ namespace LB.UI
         [SerializeField] GameObject levelFinPanel;
         [SerializeField] GameObject pauseMenuPanel;
         [SerializeField] GameObject questEndPanel;
+        [SerializeField] GameObject questPanel;
 
         #endregion
 
@@ -124,7 +126,7 @@ namespace LB.UI
         }
         public void PauseMenuSlideIn()
         {
-            LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().enabled = false;
+            GameManager.Singleton.localPlayer.GetComponent<FirstPersonController>().enabled = false;
             showPauseMenu = true;
             Crosshair.Singleton.HideCrosshair = true;
             if (PlayerInventoryManager.Singleton.CurrentWeapon != null)
@@ -137,7 +139,7 @@ namespace LB.UI
         }
         public void PauseMenuSlideOut()
         {
-            LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().enabled = true;
+            GameManager.Singleton.localPlayer.GetComponent<FirstPersonController>().enabled = true;
 
             Crosshair.Singleton.HideCrosshair = false;
             showPauseMenu = false;
@@ -174,9 +176,9 @@ namespace LB.UI
         }
         private void UpdateHealthBar()
         {
-            healthbar.maxValue = LevelManager.Singleton.localPlayer.GetComponent<PlayerHealth>().GetMaxHealth();
+            healthbar.maxValue = GameManager.Singleton.localPlayer.GetComponent<PlayerHealth>().GetMaxHealth();
             healthbar.minValue = 0;
-            healthbar.value = LevelManager.Singleton.localPlayer.GetComponent<PlayerHealth>().GetCurrentHealth();
+            healthbar.value = GameManager.Singleton.localPlayer.GetComponent<PlayerHealth>().GetCurrentHealth();
         }
         private void UpdateIU()
         {
@@ -188,6 +190,8 @@ namespace LB.UI
             {
                 AmmoDisplayer.text = $"{PlayerInventory.CurrentWeapon.CurrentAmmoInClip} / {PlayerInventory.CurrentWeapon.MaxAmmo}";
             }
+
+            questPanel.SetActive(PlayerQuestsManager.Singleton.currentQuest != null);
 
             ScoreDisplayer.text = $"Score: {PlayerStats.Singleton.Score}";
             ZombieKilled.text = $"Zombies Killed: {PlayerStats.Singleton.KilledZombies}";

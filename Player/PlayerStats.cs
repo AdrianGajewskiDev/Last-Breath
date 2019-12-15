@@ -1,11 +1,19 @@
-﻿using UnityEngine;
+﻿using LB.GameMechanics;
+using UnityEngine;
 
 namespace LB.Player
 {
     public class PlayerStats : MonoBehaviour
     {
-        public struct PlayerLevel
+        public class PlayerLevel
         {
+            public PlayerLevel(PlayerStatsSaveModel model)
+            {
+                level = model.CurrentPlayerLevel;
+                currentEXP = model.CurrentPlayerExperience;
+                expToReach = 20;
+            }
+            
             public int level;
             public float expToReach;
             public float currentEXP;
@@ -29,12 +37,13 @@ namespace LB.Player
         private PlayerLevel m_CurrentPlayerLevel;
         public PlayerLevel CurrentPlayerLevel { get => m_CurrentPlayerLevel; }
 
+        public void SetPlayerCurrentLevel(int v) => m_CurrentPlayerLevel.level = v; 
+        public void SetPlayerEXP(float v) => m_ExperiencePoint = v;
+
         private void Awake()
         {
 
-            //TODO: Load this from file
-            m_ExperiencePoint = 0;
-            m_CurrentPlayerLevel = new PlayerLevel { level = 1, expToReach = 10 };
+            m_CurrentPlayerLevel = new PlayerLevel(SaveSystem.LoadPlayerStats());
             Singleton = this;
         }
 
@@ -70,6 +79,8 @@ namespace LB.Player
         {
             m_KilledZombies += amount;
         }
+
+        public int GetCurrentPlayerLevel() => m_CurrentPlayerLevel.level;
     }
 
 }

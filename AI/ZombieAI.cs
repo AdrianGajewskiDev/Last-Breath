@@ -86,12 +86,12 @@ namespace LB.AI
 
             this.GetComponent<ZombieHealth>().OnHit += () =>
             {
-                LevelManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnHit);
+                GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnHit);
             };
             this.GetComponent<ZombieHealth>().OnDie += () =>
             {
-                LevelManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnDie);
-                LevelManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddKilledZombies(1);
+                GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnDie);
+                GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddKilledZombies(1);
                 LevelManager.Singleton.ZombiesCount -= 1;
             };
 
@@ -108,7 +108,7 @@ namespace LB.AI
         {
             player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
             SetState();
-            CheckForPotentialTarget(LevelManager.Singleton.localPlayer.transform);
+            CheckForPotentialTarget(GameManager.Singleton.localPlayer.transform);
 
             if (player != null)
             {
@@ -293,8 +293,8 @@ namespace LB.AI
                 player.GetComponent<PlayerHealth>().OnHit += () =>
                 {
                     StartCoroutine(UIManager.Singleton.SetBloodOverlay());
-                    LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().AudioSource.clip = LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().hitSound;
-                    LevelManager.Singleton.localPlayer.GetComponent<FirstPersonController>().AudioSource.Play();
+                    GameManager.Singleton.localPlayer.GetComponent<FirstPersonController>().AudioSource.clip = GameManager.Singleton.localPlayer.GetComponent<FirstPersonController>().hitSound;
+                    GameManager.Singleton.localPlayer.GetComponent<FirstPersonController>().AudioSource.Play();
                 };
 
                 player.GetComponent<PlayerHealth>().GiveDamage(Damage);

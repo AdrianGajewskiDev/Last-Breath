@@ -1,7 +1,7 @@
 ﻿namespace LB.GameMechanics
 {
     [System.Serializable]
-    public struct OptionsUtility_Sounds
+    public struct VolumeOptionsSaveModel
     {
         public float VolumeSlider;
         public float PitchSlider;

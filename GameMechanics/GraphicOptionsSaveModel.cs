@@ -1,7 +1,7 @@
 ﻿namespace LB.GameMechanics
 {
     [System.Serializable]
-    public struct OptionsUtility_Graphic
+    public struct GraphicOptionsSaveModel
     {
         public int[] currentResolution;
         public int currentQualityLevel;

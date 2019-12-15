@@ -22,7 +22,7 @@ namespace LB.UI
 
         private void Awake()
         {
-            var options = SaveSystem.LoadOptions<OptionsUtility_Graphic>(OptionsType.Graphic);
+            var options = SaveSystem.LoadOptions<GraphicOptionsSaveModel>(OptionsType.Graphic);
 
 
             lightSlider.value = options.currentlightIntensity;
