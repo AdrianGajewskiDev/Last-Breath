@@ -15,7 +15,7 @@ namespace LB.UI
         public Slider MSYSlider;
         public Slider ControllerSXSlider;
         public Slider ControllerSYSlider;
-
+        public Toggle useAutoSave;
         FirstPersonController playerController;
 
 
@@ -33,11 +33,12 @@ namespace LB.UI
             ControllerSXSlider.value = options.ControllerSensitivityX;
             ControllerSYSlider.value = options.ControllerSensitivityY;
             inputType = (InputType)Enum.Parse(typeof(InputType), options.InputType);
+            useAutoSave.isOn = options.UseAutoSave;
         }
 
         public void SaveOptions()
         {
-            SaveSystem.SaveOptions_Controll(MSXSlider.value, MSYSlider.value, ControllerSXSlider.value, ControllerSYSlider.value, inputType.ToString());
+            SaveSystem.SaveOptions_Controll(MSXSlider.value, MSYSlider.value, ControllerSXSlider.value, ControllerSYSlider.value, inputType.ToString(), useAutoSave.isOn);
         }
 
         private void Update()
@@ -46,6 +47,8 @@ namespace LB.UI
             playerController.MouseLook.YSensitivity = MSYSlider.value;
             playerController.MouseLook.Xbox_SensitivityX= ControllerSXSlider.value;
             playerController.MouseLook.Xbox_SensitivityY = ControllerSYSlider.value;
+            GameManager.Singleton.UseAutoSave = useAutoSave.isOn;
+
         }
     }
 

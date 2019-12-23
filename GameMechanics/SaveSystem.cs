@@ -11,7 +11,8 @@ namespace LB.GameMechanics
         float mouseSensitivityY,
         float controllerSensitivityX,
         float controllerSensitivityY,
-        string inputType)
+        string inputType,
+        bool useAutoSave)
         {
             string optionsPath = Application.streamingAssetsPath + "/ControllOptions.json";
 
@@ -21,7 +22,8 @@ namespace LB.GameMechanics
                 MouseSensitivityY = mouseSensitivityY,
                 ControllerSensitivityX = controllerSensitivityX,
                 ControllerSensitivityY = controllerSensitivityY,
-                InputType = inputType
+                InputType = inputType,
+                UseAutoSave = useAutoSave
             };
 
             var jsonData = JsonUtility.ToJson(options);

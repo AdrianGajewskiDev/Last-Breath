@@ -104,11 +104,10 @@ namespace LB.Player.Inventory
                 Knife.gameObject.SetActive(false);
                 SetCurrentWeapon(currentWeaponIndex);
             }
-            //else 
-            //{
-            //    Knife.gameObject.SetActive(true);
-            //}
-
+            else 
+            {
+                Knife.gameObject.SetActive(true);
+            }
         }
     }
 

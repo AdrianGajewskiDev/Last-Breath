@@ -9,6 +9,7 @@ namespace LB.GameMechanics
         public float MouseSensitivityY;
         public float ControllerSensitivityX;
         public float ControllerSensitivityY;
+        public bool UseAutoSave;
 
     }
 
