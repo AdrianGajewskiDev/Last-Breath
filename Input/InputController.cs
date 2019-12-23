@@ -8,6 +8,8 @@ namespace LB.InputControllers
         public static bool LeftMouse;
         public static bool RightMouse;
 
+        public static bool StealthKill;
+
         public static bool PrimaryWeapon;
         public static bool SecondaryWeapon;
 
@@ -32,6 +34,8 @@ namespace LB.InputControllers
         {
             LeftMouse = Input.GetMouseButtonDown(0) || Input.GetMouseButton(0);
             RightMouse = Input.GetMouseButton(1);
+
+            StealthKill = Input.GetKeyDown(KeyCode.X);
 
             PrimaryWeapon = Input.GetKeyDown(KeyCode.Alpha1);
             SecondaryWeapon = Input.GetKeyDown(KeyCode.Alpha2);

@@ -11,7 +11,7 @@ namespace LB.Weapons.Knife
         public int Damage;
 
 
-        Animator animator;
+        public Animator animator;
 
         new Camera camera;
 
@@ -49,6 +49,11 @@ namespace LB.Weapons.Knife
                     if (hit.transform.GetComponentInParent<ZombieHealth>() != null)
                     {
                         hit.transform.GetComponentInParent<ZombieHealth>().GiveDamage(Damage);
+                        hit.transform.GetComponentInParent<ZombieHealth>().OnHit += (ai) =>
+                        {
+                            if (ai.player == null)
+                                ai.SetTarget(GameManager.Singleton.localPlayer.transform);
+                        };
                         GetComponentInParent<AudioSource>().PlayOneShot(hitSound);
                         Instantiate(blood, hit.transform.position, hit.transform.rotation);
 
@@ -69,6 +74,8 @@ namespace LB.Weapons.Knife
         public void SetIsAttackingToTrue() => isAttacking = true;
         public void SetIsAttackingToFalse() => isAttacking = false;
 
+
+      
     }
 
 }

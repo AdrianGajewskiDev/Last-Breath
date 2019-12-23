@@ -9,10 +9,11 @@ namespace LB.Health
         public float MaxHealth;
 
         public float currentHealth;
+        public bool KilledByKnife;
 
         Animator animator;
 
-        public event System.Action OnHit;
+        public event System.Action<ZombieAI> OnHit;
         public event System.Action OnDie;
 
         private void Awake()
@@ -23,16 +24,23 @@ namespace LB.Health
 
         public bool IsDead() => currentHealth <= 0;
 
+
         public void Die()
         {
             if (!IsDead())
                 return;
 
-            animator.SetBool("Died", true);
+            if (KilledByKnife == true)
+            {
+                animator.SetBool("dieFromKnife", true);
+
+            }
+            else
+                animator.SetBool("Died", true);
+
             GetComponent<ZombieAI>().enabled = false;
             GetComponent<AudioSource>().Stop();
             Destroy(gameObject, 5);
-
 
         }
 
@@ -50,7 +58,7 @@ namespace LB.Health
         public void GiveDamage(int ammount)
         {
             currentHealth -= ammount;
-            OnHit?.Invoke();
+            OnHit?.Invoke(gameObject.GetComponent<ZombieAI>());
         }
     }
 

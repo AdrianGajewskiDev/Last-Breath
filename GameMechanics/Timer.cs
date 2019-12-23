@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace LB.GameMechanics
@@ -8,16 +9,11 @@ namespace LB.GameMechanics
     {
         public static Timer Singleton;
 
-        public static IEnumerator WaitForSeconds(float s)
+        public  Task WaitForSeconds(int milliseconds)
         {
-            yield return new WaitForSeconds(s);
+            return Task.Delay(milliseconds);
         }
 
-        public static IEnumerator WaitToSaveGameProgress(float t)
-        {
-            yield return new WaitForSecondsRealtime(20f);
-
-        }
         private class TimedEvent
         {
             public float TimeToExecute;

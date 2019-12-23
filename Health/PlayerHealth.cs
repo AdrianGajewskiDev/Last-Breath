@@ -58,7 +58,7 @@ namespace LB.Health
             this.GetComponent<FirstPersonController>().enabled = false;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            PlayerInventoryManager.Singleton.CurrentWeapon.enabled = false;
+            if(PlayerInventoryManager.Singleton.CurrentWeapon != null) PlayerInventoryManager.Singleton.CurrentWeapon.enabled = false;
         }
     }
 
