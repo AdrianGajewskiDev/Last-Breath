@@ -5,11 +5,11 @@ using UnityEngine;
 
 namespace LB.GameMechanics
 {
-    public class PickUpWeapon : MonoBehaviour, IPickupAble
+    public class PickUpWeapon : PickUpAble
     {
         public GameObject WeaponPrefab;
 
-        public void Execute()
+        public override void Execute()
         {
             PlayerStats.Singleton.AddEXP(3f);
             PlayerInventoryManager.Singleton.AddWeapon(WeaponPrefab);
@@ -17,7 +17,7 @@ namespace LB.GameMechanics
             Destroy(gameObject, 1f);
         }
 
-        public string GetName() => $"Pick up a {WeaponPrefab.name}";
+        public override string GetName() => $"Pick up a {WeaponPrefab.name}";
 
     }
 

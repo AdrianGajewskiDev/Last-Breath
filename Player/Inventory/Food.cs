@@ -4,18 +4,19 @@ using UnityEngine;
 
 namespace LB.Player.Inventory
 {
-    public class Food : MonoBehaviour, IPickupAble
+    public class Food :  PickUpAble
     {
         public int healthPoints;
 
-        public void Execute()
+        public override void Execute()
         {
             GameManager.Singleton.localPlayer.GetComponent<PlayerHealth>().AddHealth(healthPoints);
             PlayerStats.Singleton.AddEXP(2f);
-            Destroy(this.gameObject);
+            this.GetComponent<MeshRenderer>().enabled = false;
+            PlayerInventoryManager.Singleton.AddItem(this);
         }
 
-        public string GetName() => $"Pick up a {this.gameObject.name}";
+        public override string GetName() => $"Pick up a {this.gameObject.name}";
     }
 
 }

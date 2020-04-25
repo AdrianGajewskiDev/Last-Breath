@@ -1,18 +1,20 @@
 ﻿using LB.GameMechanics;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace LB.Quests
 {															
-    public class QuestLauncher : MonoBehaviour, IPickupAble
+    public class QuestLauncher :  PickUpAble
     {
 		public Quest quest;
-		
-		public void Execute()
+
+
+        public override void Execute()
         {
             quest.Init();
         }
-        public string GetName() => $"Start a {quest.Name} quest";
+        public override string GetName() => $"Start {quest.Name} quest";
 
     }
 	

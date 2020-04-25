@@ -53,13 +53,17 @@ namespace LB.Weapons.SMG
 
         public override IEnumerator Reload()
         {
-            isReloading = true;
-            animator.SetBool("IsReloading", true);
-            AudioSource.PlayOneShot(gunReloadSound);
-            yield return new WaitForSeconds(3f);
-            HandleReload(ref CurrentAmmoInClip, ref ClipSize, ref MaxAmmo);
-            animator.SetBool("IsReloading", false);
-            isReloading = false;
+            if(CurrentAmmoInClip != ClipSize)
+            {
+                isReloading = true;
+                animator.SetBool("IsReloading", true);
+                AudioSource.PlayOneShot(gunReloadSound);
+                yield return new WaitForSeconds(3f);
+                HandleReload(ref CurrentAmmoInClip, ref ClipSize, ref MaxAmmo);
+                animator.SetBool("IsReloading", false);
+                isReloading = false;    
+            }
+            
         }
 
         public override void Aim()

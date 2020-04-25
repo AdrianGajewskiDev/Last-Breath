@@ -4,16 +4,16 @@ using UnityEngine;
 
 namespace LB.Player.Inventory
 {
-    public class Battery : MonoBehaviour, IPickupAble
+    public class Battery :  PickUpAble
     {
-        public void Execute()
+        public override void Execute()
         {
             GameManager.Singleton.localPlayer.GetComponentInChildren<Flashlight>().LoadBattery();
             UIManager.Singleton.MessageDisplayer.text = string.Empty;
             Destroy(gameObject);
         }
 
-        public string GetName() => "Pick up a battery";
+        public override string GetName() => "Pick up a battery";
 
     }
 }

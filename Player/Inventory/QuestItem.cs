@@ -3,10 +3,10 @@ using UnityEngine;
 
 namespace LB.Player.Inventory
 {
-    public class QuestItem : MonoBehaviour, IInventoryItem, IPickupAble
+    public class QuestItem : PickUpAble, IInventoryItem
     {
 
-        public void Execute()
+        public override void Execute()
         {
             PlayerInventoryManager.Singleton.questItems.Add(this);
         }
@@ -16,7 +16,7 @@ namespace LB.Player.Inventory
             Debug.Log("Works");
         }
 
-        public string GetName() => $"Pick up a {this.gameObject.name}";
+        public override string GetName() => $"Pick up a {this.gameObject.name}";
 
     }
 }

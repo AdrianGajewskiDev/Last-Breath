@@ -38,7 +38,6 @@ namespace LB.AI
         public AudioClip WalkAndPatrolSFX;
         public AudioClip RunSFX;
 
-        public bool makeZombieIdle;
         public bool SetSpecialAttack;
 
         AudioSource playerWeaponSounds;
@@ -62,6 +61,15 @@ namespace LB.AI
             Patrolling
         }
 
+        [System.Serializable]
+        class SpecialActions
+        {
+            public bool MakeZombieIdle;
+            public bool MakeZombieBitting;
+
+        }
+
+        [SerializeField] SpecialActions ZombieSpecialActions;
         [SerializeField] ZombieState state;
 
         [HideInInspector] public Transform player = null;
@@ -118,12 +126,15 @@ namespace LB.AI
                 RotateToTarget(this.gameObject.transform, player.transform.Find("LookAtTarget"), 3f);
                 Move();
                 SetUpNavMeshAgent(false);
+                ZombieSpecialActions.MakeZombieBitting = false;
+
             }
             else
             {
-                if (state != ZombieState.Idle && makeZombieIdle == false)
+                if (state != ZombieState.Idle && ZombieSpecialActions.MakeZombieIdle == false && ZombieSpecialActions.MakeZombieBitting == false)
                 {
                     SetUpNavMeshAgent(true);
+
                     if (!agent.pathPending)
                     {
                         if (agent.remainingDistance <= agent.stoppingDistance)
@@ -143,6 +154,11 @@ namespace LB.AI
                     PlayAnimation(ZombieState.Idle);
                 }
             }
+
+            if (ZombieSpecialActions.MakeZombieBitting)
+                animator.SetBool("Bitting", true);
+            else
+                animator.SetBool("Bitting",false);
 
             AttackPlayer();
 

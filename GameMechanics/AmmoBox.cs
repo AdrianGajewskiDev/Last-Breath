@@ -5,7 +5,7 @@ using UnityEngine;
 namespace LB.GameMechanics
 {
     [RequireComponent(typeof(AudioSource))]
-    public class AmmoBox : MonoBehaviour, IPickupAble
+    public class AmmoBox : PickUpAble
     {
         private AudioSource audioSource;
         public int AmmoAmount;
@@ -15,7 +15,7 @@ namespace LB.GameMechanics
             audioSource = GetComponent<AudioSource>();
         }
 
-        public void Execute()
+        public override void Execute()
         {
             if (PlayerInventoryManager.Singleton.CurrentWeapon != null)
             {
@@ -26,7 +26,7 @@ namespace LB.GameMechanics
         }
 
 
-        public string GetName() => "Pick up a ammo";
+        public override string GetName() => "Pick up a ammo";
     }
 
 }

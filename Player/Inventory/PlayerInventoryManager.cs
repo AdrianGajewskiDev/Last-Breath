@@ -1,4 +1,6 @@
-﻿using LB.InputControllers;
+﻿using LB.GameMechanics;
+using LB.InputControllers;
+using LB.UI;
 using LB.Weapons;
 using LB.Weapons.Knife;
 using System.Collections.Generic;
@@ -108,6 +110,14 @@ namespace LB.Player.Inventory
             {
                 Knife.gameObject.SetActive(true);
             }
+        }
+
+        public void AddItem(PickUpAble item) 
+        {
+            inventoryItems.Add(item);
+
+            UIManager.Singleton.AddItemToInventory(item);
+            
         }
     }
 
