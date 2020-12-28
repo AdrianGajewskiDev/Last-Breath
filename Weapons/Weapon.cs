@@ -72,22 +72,48 @@ namespace LB.Weapons
         public void HandleReload(ref int currentAmmoInClip, ref int clipSize, ref int maxAmmo)
         {
 
-            if (MaxAmmo >= 1)
+            if (MaxAmmo > 0)
             {
                 if (currentAmmoInClip > 0)
                 {
-                    var currentAmmo = currentAmmoInClip;
-                    var ammoToAdd = clipSize - currentAmmo;
-                    maxAmmo -= ammoToAdd;
-                    currentAmmoInClip += ammoToAdd;
+                    int ammoToAdd = 0;
+                    if (maxAmmo >= clipSize)
+                    {
+                        ammoToAdd = clipSize - currentAmmoInClip;
+                        CurrentAmmoInClip += ammoToAdd;
+                        maxAmmo -= ammoToAdd;
+                    }
+
+                    ammoToAdd = currentAmmoInClip + maxAmmo;
+                    if (ammoToAdd > clipSize) 
+                    {
+                        var tooMany = ammoToAdd - clipSize;
+                        currentAmmoInClip = ammoToAdd - tooMany;
+                        maxAmmo = tooMany;
+
+                    }
+                    else
+                    {
+                        currentAmmoInClip = ammoToAdd;
+                        maxAmmo = 0;
+                    }
+
+                }
+                else
+                {
+
+                    if (maxAmmo > clipSize)
+                    {
+                        currentAmmoInClip = clipSize;
+                        maxAmmo -= clipSize;
+                    }
+                    else
+                    {
+                        currentAmmoInClip = maxAmmo;
+                        maxAmmo = 0;
+                    }
                 }
 
-                if (currentAmmoInClip == 0)
-                {
-                    var ammoToAdd = clipSize;
-                    maxAmmo -= ammoToAdd;
-                    currentAmmoInClip += ammoToAdd;
-                }
             }
         }
 

@@ -115,8 +115,11 @@ namespace LB.AI
 
         public void Update()
         {
+            if (GameManager.Singleton.GameMode == GameMode.Story)
+                player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
 
-            player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
+            else
+                player = GameManager.Singleton.localPlayer.transform;
 
             SetState();
             CheckForPotentialTarget(GameManager.Singleton.localPlayer.transform);
@@ -141,6 +144,7 @@ namespace LB.AI
                         {
                             if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
                             {
+                                Debug.Log(_waypoints.Count);
                                 SetDestination(ref agent, _waypoints);
                             }
                         }
