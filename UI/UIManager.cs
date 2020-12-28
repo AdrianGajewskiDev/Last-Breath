@@ -181,13 +181,14 @@ namespace LB.UI
             healthbar.minValue = 0;
             healthbar.value = GameManager.Singleton.localPlayer.GetComponent<PlayerHealth>().GetCurrentHealth();
         }
-        public void AddItemToInventory(PickupAble objectToAdd)
+
+        public void AddItemToInventory(PickUpAble objectToAdd)
         {
             objectToAdd.transform.rotation = Quaternion.identity;
-
             objectToAdd.gameObject.AddComponent<Image>().sprite = objectToAdd.Image;
             objectToAdd.transform.SetParent(inventoryContainer.transform);
         }
+
         private void UpdateIU()
         {
             if (PlayerInventory.CurrentWeapon == null)

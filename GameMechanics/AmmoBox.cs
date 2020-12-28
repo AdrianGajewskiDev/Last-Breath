@@ -5,7 +5,7 @@ using UnityEngine;
 namespace LB.GameMechanics
 {
     [RequireComponent(typeof(AudioSource))]
-    public class AmmoBox : PickupAble
+    public class AmmoBox : PickUpAble
     {
         private AudioSource audioSource;
         public int AmmoAmount;

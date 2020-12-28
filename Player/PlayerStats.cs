@@ -55,6 +55,7 @@ namespace LB.Player
         private void Update()
         {
             m_CurrentPlayerLevel.currentEXP = m_ExperiencePoint;
+
             IncreasePlayerLevel();
         }
 

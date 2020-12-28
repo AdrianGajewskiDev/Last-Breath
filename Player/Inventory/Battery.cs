@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LB.Player.Inventory
 {
-    public class Battery :  PickupAble
+    public class Battery :  PickUpAble
     {
         public override void Execute()
         {

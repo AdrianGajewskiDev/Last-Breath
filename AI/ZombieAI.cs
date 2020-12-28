@@ -51,7 +51,7 @@ namespace LB.AI
         Animator animator;
         NavMeshAgent agent;
         AudioSource audioSource;
-        GameMode currentGameMode;
+
         enum ZombieState
         {
             Idle,
@@ -83,19 +83,10 @@ namespace LB.AI
                 _waypoints.Add(w.transform);
             }
         }
+
         private void Start()
         {
-            currentGameMode = GameManager.Singleton.GameMode;
-
-            if(currentGameMode != GameMode.Survival)
-                SetWaypoints();
-
-            if(currentGameMode == GameMode.Survival)
-            {
-                player = GameObject.FindGameObjectWithTag("Player").transform ;
-            }
-
-
+            SetWaypoints();
             animator = GetComponent<Animator>();
             ragdolls = GetComponentsInChildren<Rigidbody>();
             agent = GetComponent<NavMeshAgent>();
@@ -108,9 +99,7 @@ namespace LB.AI
             };
             this.GetComponent<ZombieHealth>().OnDie += () =>
             {
-
                 GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnDie);
-                GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddEXP(zombieScoreAmountOnDie);
                 GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddKilledZombies(1);
                 LevelManager.Singleton.ZombiesCount -= 1;
             };
@@ -118,21 +107,19 @@ namespace LB.AI
             if (GameManager.Singleton.GameMode == GameMode.Survival)
                 LevelManager.Singleton.ZombiesCount += 1;
         }
+
         //private void OnDrawGizmos()
         //{
         //    DrawGizmos(this.gameObject.transform, Radius, Angle);
         //}
+
         public void Update()
         {
-            if (currentGameMode == GameMode.Survival)
-                player = GameManager.Singleton.localPlayer.transform;
-            else
-            {
-                player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
-                CheckForPotentialTarget(GameManager.Singleton.localPlayer.transform);
-            }
+
+            player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
 
             SetState();
+            CheckForPotentialTarget(GameManager.Singleton.localPlayer.transform);
 
             if (player != null)
             {
@@ -178,6 +165,7 @@ namespace LB.AI
             if (PlayerInventoryManager.Singleton.CurrentWeapon != null)
                 playerWeaponSounds = PlayerInventoryManager.Singleton.CurrentWeapon.transform.GetComponent<AudioSource>();
         }
+
         public void SetTarget(Transform target)
         {
             if (IsInLineOfSight(target, this.gameObject.transform, Angle, Radius, layerMask) || player != null)
@@ -185,6 +173,7 @@ namespace LB.AI
 
             player = target;
         }
+
         //Check if zombie don't see player but can hear him
         void CheckForPotentialTarget(Transform target)
         {
@@ -199,11 +188,13 @@ namespace LB.AI
             }
 
         }
+
         void SetUpNavMeshAgent(bool enabled)
         {
             agent.enabled = enabled;
             agent.speed = Speed;
         }
+
         void SetState()
         {
 
@@ -244,6 +235,7 @@ namespace LB.AI
             PlaySoundEffects(state);
             PlayAnimation(state);
         }
+
         void PlayAnimation(ZombieState state)
         {
             switch (state)
@@ -279,10 +271,12 @@ namespace LB.AI
                     break;
             }
         }
+
         void Move()
         {
             transform.position += transform.forward * Speed * Time.deltaTime;
         }
+
         void DisableRagdoll()
         {
             foreach (var rbody in ragdolls)
@@ -290,6 +284,8 @@ namespace LB.AI
                 rbody.isKinematic = true;
             }
         }
+
+
         void AttackPlayer()
         {
             if (player == null)
@@ -314,6 +310,9 @@ namespace LB.AI
             }
 
         }
+
+     
+
         private void OnTriggerStay(Collider other)
         {
             if (other.GetComponentInChildren<Knife>() != null)
@@ -331,6 +330,9 @@ namespace LB.AI
                 }
             }
         }
+
+
+
         public void GiveDamageToPlayer()
         {
             var distanceToPlayer = Vector3.Distance(gameObject.transform.position, player.transform.position);
@@ -348,6 +350,7 @@ namespace LB.AI
             }
 
         }
+
         void PlaySoundEffects(ZombieState state)
         {
             switch (state)

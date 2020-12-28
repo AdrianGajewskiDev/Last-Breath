@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace LB.GameMechanics
 {
-    public class PickUpWeapon : PickupAble
+    public class PickUpWeapon : PickUpAble
     {
         public GameObject WeaponPrefab;
 

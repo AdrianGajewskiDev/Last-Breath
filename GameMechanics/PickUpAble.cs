@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace LB.GameMechanics
 {
-    public abstract class PickupAble : MonoBehaviour, IInventoryItem
+    public abstract class PickUpAble : MonoBehaviour, IInventoryItem
     {
         public Sprite Image;
 
