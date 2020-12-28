@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace LB.Player.Inventory
 {
-    public class QuestItem : PickUpAble, IInventoryItem
+    public class QuestItem : PickupAble, IInventoryItem
     {
 
         public override void Execute()

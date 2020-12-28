@@ -112,7 +112,7 @@ namespace LB.Player.Inventory
             }
         }
 
-        public void AddItem(PickUpAble item) 
+        public void AddItem(PickupAble item) 
         {
             inventoryItems.Add(item);
 

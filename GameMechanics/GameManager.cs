@@ -39,7 +39,6 @@ namespace LB.GameMechanics
 
                 Timer.Singleton.Add(() =>
                 {
-                    Debug.Log("Save");
                     saveGame = true;
 
 

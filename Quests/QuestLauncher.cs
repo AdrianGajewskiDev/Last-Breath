@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace LB.Quests
 {															
-    public class QuestLauncher :  PickUpAble
+    public class QuestLauncher :  PickupAble
     {
 		public Quest quest;
 

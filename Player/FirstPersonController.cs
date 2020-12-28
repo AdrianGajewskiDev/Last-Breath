@@ -120,11 +120,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
             if(Physics.Raycast(origin, direction, out hit, 5f))
             {
 
-                if (hit.transform.GetComponent<PickUpAble>() != null)
+                if (hit.transform.GetComponent<PickupAble>() != null)
                 {
-                    UIManager.Singleton.MessageDisplayer.text = hit.transform.GetComponent<PickUpAble>().GetName();
+                    UIManager.Singleton.MessageDisplayer.text = hit.transform.GetComponent<PickupAble>().GetName();
                     if(InputController.PickUpItem)
-                        hit.transform.GetComponent<PickUpAble>().Execute();
+                        hit.transform.GetComponent<PickupAble>().Execute();
                 }
                 else
                     UIManager.Singleton.MessageDisplayer.text = string.Empty;

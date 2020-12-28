@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace LB.Player.Inventory
 {
-    public class Food :  PickUpAble
+    public class Food :  PickupAble
     {
         public int healthPoints;
 
