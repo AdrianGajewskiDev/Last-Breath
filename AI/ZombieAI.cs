@@ -39,7 +39,7 @@ namespace LB.AI
         public AudioClip RunSFX;
 
         public bool SetSpecialAttack;
-
+        bool _isDead;
         AudioSource playerWeaponSounds;
         public LayerMask layerMask;
 
@@ -99,6 +99,8 @@ namespace LB.AI
             };
             this.GetComponent<ZombieHealth>().OnDie += () =>
             {
+                SetUpNavMeshAgent(false);
+                _isDead = true;
                 GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnDie);
                 GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddKilledZombies(1);
                 LevelManager.Singleton.ZombiesCount -= 1;
@@ -115,6 +117,9 @@ namespace LB.AI
 
         public void Update()
         {
+            if (_isDead == true)
+                return;
+
             if (GameManager.Singleton.GameMode == GameMode.Story)
                 player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
 
@@ -144,7 +149,6 @@ namespace LB.AI
                         {
                             if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
                             {
-                                Debug.Log(_waypoints.Count);
                                 SetDestination(ref agent, _waypoints);
                             }
                         }
@@ -193,7 +197,7 @@ namespace LB.AI
 
         }
 
-        void SetUpNavMeshAgent(bool enabled)
+        public void SetUpNavMeshAgent(bool enabled)
         {
             agent.enabled = enabled;
             agent.speed = Speed;

@@ -26,14 +26,14 @@ namespace LB.AI
         }
 
         //NOTE: Call this inside Update or FixedUpdate function
-        public Transform ScanForTarget<T>(Transform center, LayerMask l_mask, float maxRadius, float maxAngle)
+        public Transform ScanForTarget<T>(Transform center, LayerMask l_mask, float maxRadius, float maxAngle) where T: MonoBehaviour
         {
             Collider[] potentialTargets = Physics.OverlapSphere(center.position, maxRadius);
 
             foreach (Collider col in potentialTargets)
             {
 
-                if (col.transform.GetComponent<T>() != null)
+                if (col.transform.GetComponent<T>() != null && col.transform.GetComponent<T>().enabled == true)
                 {
                     var target = col.transform;
 
@@ -42,7 +42,6 @@ namespace LB.AI
                     else
                         return null;
                 }
-
             }
 
             return null;

@@ -3,6 +3,7 @@
     public enum GameMode
     {
         Survival,
-        Story
+        Story,
+        Testing
     }
 }
