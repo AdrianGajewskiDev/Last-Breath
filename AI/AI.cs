@@ -47,6 +47,30 @@ namespace LB.AI
             return null;
         }
 
+        public Transform[] ScanForTargets<T>(Transform center, LayerMask l_mask, float maxRadius, float maxAngle) where T : MonoBehaviour
+        {
+            Queue<Transform> targets = new Queue<Transform>();
+
+            Collider[] potentialTargets = Physics.OverlapSphere(center.position, maxRadius);
+
+            //if we have any targets
+            if(potentialTargets.Length > 0)
+            {
+                foreach (var target in potentialTargets)
+                {
+                    if (target.GetComponent<T>() != null && target.GetComponent<T>().enabled == true)
+                    {
+                        if (IsInLineOfSight(target.transform, center, maxAngle, maxRadius, l_mask)) 
+                            targets.Enqueue(target.transform);
+                    }
+                    else
+                        continue;
+                }
+            }
+
+            return targets.ToArray();
+        }
+
         public bool IsInLineOfSight(Transform target, Transform checkingObject, float maxAngle, float range, LayerMask mask)
         {
             Vector3 direction = (target.position - checkingObject.position).normalized;

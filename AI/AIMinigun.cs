@@ -1,4 +1,5 @@
 using LB.Health;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace LB.AI
@@ -8,6 +9,7 @@ namespace LB.AI
     {
         [SerializeField] private Transform muzzle;
 
+        private Transform[] allTargets;
         private Transform currentTarget;
         private AudioSource audioSource;
 
@@ -31,15 +33,16 @@ namespace LB.AI
 
         private void Update()
         {
-            currentTarget = ScanForTarget<ZombieAI>(muzzle, layerMask, Radius, Angle);
+            allTargets = ScanForTargets<ZombieAI>(muzzle, layerMask, Radius, Angle);
 
-            if(currentTarget != null)
+            if(allTargets.Length > 0)
+                currentTarget = CalculateCurrentTarget();
+
+            if(currentTarget != null && !currentTarget.GetComponent<IHealth>().IsDead())
             {
-                if(!currentTarget.GetComponent<IHealth>().IsDead())
-                {
-                    RotateToTarget(muzzle.parent, currentTarget, 60f);
-                    Shoot();
-                }
+                Debug.Log($"Shooting to { currentTarget.name }");
+                RotateToTarget(muzzle.parent, currentTarget, 60f);
+                Shoot();
             }
         }
 
@@ -54,6 +57,20 @@ namespace LB.AI
             }
 
             deltaTime += Time.deltaTime;
+        }
+
+        public Transform CalculateCurrentTarget()
+        {
+            Dictionary<float, Transform> distances = new Dictionary<float, Transform>();
+
+            foreach (var target in allTargets)
+            {
+                distances.Add(Vector3.Distance(transform.position, target.position), target);
+            }
+
+            var sortedDistances = distances.GetSortedAscending();
+
+            return distances[sortedDistances[0]];
         }
 
         private void OnDrawGizmos()
