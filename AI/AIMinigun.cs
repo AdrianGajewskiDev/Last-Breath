@@ -40,7 +40,6 @@ namespace LB.AI
 
             if(currentTarget != null && !currentTarget.GetComponent<IHealth>().IsDead())
             {
-                Debug.Log($"Shooting to { currentTarget.name }");
                 RotateToTarget(muzzle.parent, currentTarget, 60f);
                 Shoot();
             }

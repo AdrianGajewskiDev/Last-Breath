@@ -20,23 +20,14 @@ namespace LB.AI
     public class ZombieAI : AI
     {
         [Header("Locomotion")]
-        public float WalkSpeed;
-        public float RunningSpeed;
-        public float PatrollingSpeed;
-        public float distanceToAttack;
-        public float zombieScoreAmountOnHit;
-        public float zombieScoreAmountOnDie;
+        public ZombieAIConfiguration configuration;
+
         [HideInInspector] public float Speed;
         public IList<Transform> _waypoints = new List<Transform>();
 
         [Header("FOV")]
         public float Angle;
         public float Radius;
-
-        [Header("Sound Effects")]
-        public AudioClip AttackSFX;
-        public AudioClip WalkAndPatrolSFX;
-        public AudioClip RunSFX;
 
         public bool SetSpecialAttack;
         bool _isDead;
@@ -86,6 +77,9 @@ namespace LB.AI
 
         private void Start()
         {
+            if (configuration == null)
+                Debug.LogError($"{nameof(configuration)} is null or not assigned!!!!");
+
             SetWaypoints();
             animator = GetComponent<Animator>();
             ragdolls = GetComponentsInChildren<Rigidbody>();
@@ -95,13 +89,13 @@ namespace LB.AI
 
             this.GetComponent<ZombieHealth>().OnHit += (aa) =>
             {
-                GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnHit);
+                GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(configuration.zombieScoreAmountOnHit);
             };
             this.GetComponent<ZombieHealth>().OnDie += () =>
             {
                 SetUpNavMeshAgent(false);
                 _isDead = true;
-                GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(zombieScoreAmountOnDie);
+                GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(configuration.zombieScoreAmountOnDie);
                 GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddKilledZombies(1);
                 LevelManager.Singleton.ZombiesCount -= 1;
             };
@@ -220,13 +214,13 @@ namespace LB.AI
                     //Random zombie behavior so it's not the same every time
                     if (behaviour == 0)
                     {
-                        Speed = WalkSpeed;
+                        Speed = configuration.WalkSpeed;
                         state = ZombieState.Walking;
                     }
 
                     if (behaviour == 1)
                     {
-                        Speed = RunningSpeed;
+                        Speed = configuration.RunningSpeed;
                         state = ZombieState.Running;
                     }
 
@@ -235,7 +229,7 @@ namespace LB.AI
             else
             {
 
-                Speed = PatrollingSpeed;
+                Speed = configuration.PatrollingSpeed;
                 state = ZombieState.Patrolling;
             }
 
@@ -301,7 +295,7 @@ namespace LB.AI
 
             var distanceToPlayer = Vector3.Distance(gameObject.transform.position, player.transform.position);
 
-            if (distanceToPlayer <= distanceToAttack)
+            if (distanceToPlayer <= configuration.distanceToAttack)
             {
 
                 Speed = 0;
@@ -310,9 +304,9 @@ namespace LB.AI
             else
             {
                 if (state == ZombieState.Walking)
-                    Speed = WalkSpeed;
+                    Speed = configuration.WalkSpeed;
                 else
-                    Speed = RunningSpeed;
+                    Speed = configuration.RunningSpeed;
 
                 animator.SetBool("Attack", false);
             }
@@ -345,7 +339,7 @@ namespace LB.AI
         {
             var distanceToPlayer = Vector3.Distance(gameObject.transform.position, player.transform.position);
 
-            if (distanceToPlayer <= distanceToAttack)
+            if (distanceToPlayer <= configuration.distanceToAttack)
             {
                 player.GetComponent<PlayerHealth>().OnHit += () =>
                 {
@@ -367,25 +361,25 @@ namespace LB.AI
                     break;
                 case ZombieState.Walking:
                     {
-                        audioSource.clip = WalkAndPatrolSFX;
+                        audioSource.clip = configuration.WalkAndPatrolSFX;
                         audioSource.Play();
                     }
                     break;
                 case ZombieState.Running:
                     {
-                        audioSource.clip = RunSFX;
+                        audioSource.clip = configuration.RunSFX;
                         audioSource.Play();
                     }
                     break;
                 case ZombieState.Attacking:
                     {
-                        audioSource.clip = AttackSFX;
+                        audioSource.clip = configuration.AttackSFX;
                         audioSource.Play();
                     }
                     break;
                 case ZombieState.Patrolling:
                     {
-                        audioSource.clip = WalkAndPatrolSFX;
+                        audioSource.clip = configuration.WalkAndPatrolSFX;
                         audioSource.Play();
                     }
                     break;

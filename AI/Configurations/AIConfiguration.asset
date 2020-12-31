@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2394bccdee634a347af1b50ba2cf7684, type: 3}
+  m_Name: AIConfiguration
+  m_EditorClassIdentifier: 
+  WalkSpeed: 0.5
+  RunningSpeed: 3
+  PatrollingSpeed: 0.5
+  distanceToAttack: 2
+  zombieScoreAmountOnHit: 2
+  zombieScoreAmountOnDie: 3
+  AttackSFX: {fileID: 8300000, guid: 5eba7112190535e4b96036f3404d7b3e, type: 3}
+  WalkAndPatrolSFX: {fileID: 8300000, guid: 7d043a0906acc874b8835e5e9988264d, type: 3}
+  RunSFX: {fileID: 8300000, guid: ccc26e20ecbd4de4f99c7071f876aafa, type: 3}
