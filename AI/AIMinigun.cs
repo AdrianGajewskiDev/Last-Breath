@@ -5,7 +5,7 @@ using UnityEngine;
 namespace LB.AI
 {
     [RequireComponent(typeof(AudioSource))]
-    public class AIMinigun : AI
+    public class AIMinigun : AI, IPerk
     {
         [SerializeField] private Transform muzzle;
 
@@ -19,13 +19,19 @@ namespace LB.AI
         public float Angle;
         public float Radius;
 
+        [SerializeField] int cost = 100;
+
         [Header("Effects")]
         [SerializeField] private AudioClip shootSound;
         [SerializeField] private ParticleSystem muzzleVFX;
 
         LayerMask layerMask;
 
+        bool Active = false;
         float deltaTime = 5f;
+
+        public int Cost { get => cost; set => cost = value; }
+
         private void Start()
         {
             audioSource = GetComponent<AudioSource>();
@@ -33,6 +39,9 @@ namespace LB.AI
 
         private void Update()
         {
+            if (Active == false)
+                return;
+
             allTargets = ScanForTargets<ZombieAI>(muzzle, layerMask, Radius, Angle);
 
             if(allTargets.Length > 0)
@@ -64,7 +73,11 @@ namespace LB.AI
 
             foreach (var target in allTargets)
             {
-                distances.Add(Vector3.Distance(transform.position, target.position), target);
+                var distance = Vector3.Distance(transform.position, target.position);
+                if (!distances.ContainsKey(distance))
+                    distances.Add(distance, target);
+                else
+                    continue;
             }
 
             var sortedDistances = distances.GetSortedAscending();
@@ -75,6 +88,11 @@ namespace LB.AI
         private void OnDrawGizmos()
         {
             DrawGizmos(muzzle, Radius, Angle);
+        }
+
+        public void Enable()
+        {
+            Active = true;
         }
     }
 }

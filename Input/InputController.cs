@@ -19,6 +19,11 @@ namespace LB.InputControllers
         public static bool PickUpItem;
         public static bool UseItem;
 
+        public static bool ConfirmAction;
+        public static bool CancelAction;
+
+        public static bool Perk_Minigun;
+
         #region Xbox_One_Input
         public static float Xbox_Vertical_Right_Thumbstick;
         public static float Xbox_Horizontal_Right_Thumbstick;
@@ -45,6 +50,9 @@ namespace LB.InputControllers
             ShowPauseMenu = Input.GetKeyDown(KeyCode.Escape);
             PickUpItem = Input.GetKeyDown(KeyCode.F);
             UseItem = Input.GetKeyDown(KeyCode.Q);
+            ConfirmAction = Input.GetKeyDown(KeyCode.Return);
+            CancelAction = Input.GetKeyDown(KeyCode.E);
+            Perk_Minigun = Input.GetKeyDown(KeyCode.Alpha6);
 
             //Xbox one
             Xbox_Vertical_Right_Thumbstick = Input.GetAxis("Vertical_Right_Thumbstick");

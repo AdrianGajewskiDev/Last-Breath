@@ -218,6 +218,16 @@ namespace LB.UI
 
             moneyCounter.text = PlayerStats.Singleton.PlayerMoney.ToString();
         }
+
+        public void ShowMessage(string message, float time)
+        {
+            MessageDisplayer.text = message;
+
+            Timer.Singleton.Add(() => 
+            {
+                MessageDisplayer.text = string.Empty;
+            }, time);
+        }
         #endregion
     }
 
