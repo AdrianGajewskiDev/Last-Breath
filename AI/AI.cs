@@ -32,8 +32,9 @@ namespace LB.AI
 
             foreach (Collider col in potentialTargets)
             {
+                var requiredComponent = col.transform.GetComponent<T>();
 
-                if (col.transform.GetComponent<T>() != null && col.transform.GetComponent<T>().enabled == true)
+                if (requiredComponent != null && requiredComponent.enabled == true)
                 {
                     var target = col.transform;
 
@@ -58,7 +59,10 @@ namespace LB.AI
             {
                 foreach (var target in potentialTargets)
                 {
-                    if (target.GetComponent<T>() != null && target.GetComponent<T>().enabled == true)
+                    var requiredComponent = target.transform.GetComponent<T>();
+
+
+                    if (requiredComponent != null && requiredComponent.enabled == true)
                     {
                         if (IsInLineOfSight(target.transform, center, maxAngle, maxRadius, l_mask)) 
                             targets.Enqueue(target.transform);
