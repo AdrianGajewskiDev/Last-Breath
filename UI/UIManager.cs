@@ -31,7 +31,6 @@ namespace LB.UI
         [SerializeField] GameObject questEndPanel;
         [SerializeField] GameObject questPanel;
         [SerializeField] GameObject inventoryContainer;
-
         #endregion
 
         #region Text Properties
@@ -50,6 +49,7 @@ namespace LB.UI
 
         [SerializeField] Text currentEXP;
         [SerializeField] Text EXPToReach;
+        [SerializeField] Text moneyCounter;
 
         public Text MessageDisplayer;
         public Text PauseMenuText;
@@ -86,7 +86,10 @@ namespace LB.UI
             if(GameManager.Singleton.GameMode == GameMode.Survival)
             {
                 if (InputController.ShowStats)
+                {
+                    Debug.Log("Showing stats");
                     SwitchStatsDisplayer(!showStatsMenu);
+                }
 
             }
 
@@ -181,14 +184,12 @@ namespace LB.UI
             healthbar.minValue = 0;
             healthbar.value = GameManager.Singleton.localPlayer.GetComponent<PlayerHealth>().GetCurrentHealth();
         }
-
         public void AddItemToInventory(PickUpAble objectToAdd)
         {
             objectToAdd.transform.rotation = Quaternion.identity;
             objectToAdd.gameObject.AddComponent<Image>().sprite = objectToAdd.Image;
             objectToAdd.transform.SetParent(inventoryContainer.transform);
         }
-
         private void UpdateIU()
         {
             if (PlayerInventory.CurrentWeapon == null)
@@ -214,6 +215,8 @@ namespace LB.UI
             EXPBar.minValue = 0;
             EXPBar.maxValue = PlayerStats.Singleton.CurrentPlayerLevel.expToReach;
             EXPBar.value = PlayerStats.Singleton.ExperiencePoint;
+
+            moneyCounter.text = PlayerStats.Singleton.PlayerMoney.ToString();
         }
         #endregion
     }

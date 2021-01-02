@@ -33,6 +33,9 @@ namespace LB.Player
         private float m_ExperiencePoint;
         public float ExperiencePoint { get => m_ExperiencePoint; }
 
+        private int m_playerMoney;
+        public int PlayerMoney { get => m_playerMoney; }
+
 
         private PlayerLevel m_CurrentPlayerLevel;
         public PlayerLevel CurrentPlayerLevel { get => m_CurrentPlayerLevel; }
@@ -81,6 +84,9 @@ namespace LB.Player
         }
 
         public int GetCurrentPlayerLevel() => m_CurrentPlayerLevel.level;
+
+        public void AddPlayerMoney(int amount) => m_playerMoney += amount;
+        public void DecreasePlayerMoney(int amount) => m_playerMoney -= amount;
     }
 
 }

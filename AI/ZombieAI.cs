@@ -30,7 +30,6 @@ namespace LB.AI
         public float Radius;
 
         public bool SetSpecialAttack;
-        bool _isDead;
         AudioSource playerWeaponSounds;
         public LayerMask layerMask;
 
@@ -60,6 +59,7 @@ namespace LB.AI
 
         }
 
+        bool addScoreToPlayer = false;
         [SerializeField] SpecialActions ZombieSpecialActions;
         [SerializeField] ZombieState state;
 
@@ -77,6 +77,7 @@ namespace LB.AI
 
         private void Start()
         {
+
             if (configuration == null)
                 Debug.LogError($"{nameof(configuration)} is null or not assigned!!!!");
 
@@ -87,16 +88,17 @@ namespace LB.AI
             audioSource = GetComponent<AudioSource>();
             DisableRagdoll();
 
-            this.GetComponent<ZombieHealth>().OnHit += (aa) =>
+            GetComponent<ZombieHealth>().OnHit += (aa) =>
             {
                 GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(configuration.zombieScoreAmountOnHit);
             };
-            this.GetComponent<ZombieHealth>().OnDie += () =>
+            GetComponent<ZombieHealth>().OnDie += () =>
             {
                 SetUpNavMeshAgent(false);
-                _isDead = true;
-                GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddScore(configuration.zombieScoreAmountOnDie);
-                GameManager.Singleton.localPlayer.GetComponent<PlayerStats>().AddKilledZombies(1);
+                var playerStats = GameManager.Singleton.localPlayer.GetComponent<PlayerStats>();
+                playerStats.AddScore(configuration.zombieScoreAmountOnDie);
+                playerStats.AddKilledZombies(1);
+                playerStats.AddPlayerMoney(50);
                 LevelManager.Singleton.ZombiesCount -= 1;
             };
 
@@ -111,8 +113,6 @@ namespace LB.AI
 
         public void Update()
         {
-            if (_isDead == true)
-                return;
 
             if (GameManager.Singleton.GameMode == GameMode.Story)
                 player = ScanForTarget<FirstPersonController>(this.gameObject.transform, layerMask, Radius, Angle);
@@ -167,6 +167,7 @@ namespace LB.AI
             if (PlayerInventoryManager.Singleton.CurrentWeapon != null)
                 playerWeaponSounds = PlayerInventoryManager.Singleton.CurrentWeapon.transform.GetComponent<AudioSource>();
         }
+
 
         public void SetTarget(Transform target)
         {

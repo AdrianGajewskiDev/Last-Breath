@@ -50,7 +50,10 @@ namespace LB.Health
         private void OnDisable()
         {
             if (!ZombiesManager.Singleton.gameOver)
-                OnDie?.Invoke();
+            {
+                if (OnDie != null)
+                    OnDie.Invoke();
+            }
         }
 
         private void Update()
