@@ -22,7 +22,6 @@ namespace LB.Player
         {
             if(InputController.ConfirmAction)
             {
-                Debug.Log("here");
                 if (inSpawningMode && currentPerkToSpawn != null)
                 {
                     IPerk perk = currentPerkToSpawn.GetComponent<IPerk>();
@@ -39,23 +38,26 @@ namespace LB.Player
                 }
             }
 
+
+            if (InputController.Perk_Minigun && !inSpawningMode)
+            {
+                inSpawningMode = true;
+                SpawnPerk(minigunPerkPrefab);
+            }
+
             if(inSpawningMode && InputController.CancelAction)
             {
+                inSpawningMode = false;
                 currentPerkToSpawn.transform.parent = null;
                 Destroy(currentPerkToSpawn);
             }
-
-
-
-
-            if (InputController.Perk_Minigun)
-                SpawnPerk(minigunPerkPrefab);
         }
 
         void SpawnPerk(GameObject perk)
         {
-            inSpawningMode = true;
-            Vector3 position = new Vector3(parent.position.x - 1f, 0.5f, parent.position.z + 7f);
+            Vector3 position = new Vector3(parent.position.x, .5f, parent.position.z);
+            position += parent.forward * 4f;
+
             var obj = Instantiate(perk, position, parent.rotation);
             obj.transform.parent = parent;
             obj.SetActive(true);
