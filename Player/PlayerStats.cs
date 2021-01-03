@@ -48,6 +48,7 @@ namespace LB.Player
 
             m_CurrentPlayerLevel = new PlayerLevel(SaveSystem.LoadPlayerStats());
             Singleton = this;
+            AddPlayerMoney(1000);
         }
 
         public void AddEXP(float amount)

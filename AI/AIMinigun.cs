@@ -28,7 +28,7 @@ namespace LB.AI
         LayerMask layerMask;
 
         bool Active = false;
-        float deltaTime = 5f;
+        float deltaTime;
 
         public int Cost { get => cost; set => cost = value; }
 
@@ -49,22 +49,20 @@ namespace LB.AI
 
             if(currentTarget != null && !currentTarget.GetComponent<IHealth>().IsDead())
             {
-                RotateToTarget(muzzle.parent, currentTarget, 60f);
+                RotateToTarget(muzzle, currentTarget, 60f);
                 Shoot();
             }
         }
 
         void Shoot()
         {
-            if(deltaTime >= rateOfFire)
+            if(Time.time >= deltaTime)
             {
+                deltaTime = Time.time + 1 / rateOfFire;
                 audioSource.PlayOneShot(shootSound);
                 muzzleVFX.Play();
                 currentTarget.GetComponent<IHealth>().GiveDamage(2);
-                deltaTime = 0;
             }
-
-            deltaTime += Time.deltaTime;
         }
 
         public Transform CalculateCurrentTarget()
