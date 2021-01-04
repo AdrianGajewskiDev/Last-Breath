@@ -1,13 +1,13 @@
 using LB.InputControllers;
+using LB.Player;
 using LB.UI;
 using UnityEngine;
 
-namespace LB.Player
+namespace LB.Perks
 {
     public class PerksSpawner : MonoBehaviour
     {
-        [SerializeField] GameObject minigunPerkPrefab;
-        [SerializeField] GameObject minigunPerkHologramPrefab;
+        [SerializeField] Perk[] Perks;
 
         Transform parent;
         GameObject currentPerkToSpawn;
@@ -42,18 +42,29 @@ namespace LB.Player
                 }
             }
 
-            if (InputController.Perk_Minigun && !inSpawningMode)
+            if (!inSpawningMode && Perks.Length > 0) 
             {
-                inSpawningMode = true;
-                SpawnPerk(minigunPerkHologramPrefab, true, true);
-                SpawnPerk(minigunPerkPrefab, false, false);
+                foreach (var perk in Perks)
+                {
+                    if(Input.GetKeyDown((KeyCode)perk.PerkKey))
+                    {
+                        inSpawningMode = true;
+                        currentPerkHologram = perk.HologramPrefab;
+                        currentPerkToSpawn = perk.OriginalPrefab;
+                        SpawnPerk(currentPerkToSpawn, false, false);
+                        SpawnPerk(currentPerkHologram, true, true);
+                    }
+                }
             }
+
 
             if(inSpawningMode && InputController.CancelAction)
             {
                 inSpawningMode = false;
                 currentPerkToSpawn.transform.parent = null;
+                currentPerkHologram.transform.parent = null;
                 Destroy(currentPerkToSpawn);
+                Destroy(currentPerkHologram);
             }
         }
 

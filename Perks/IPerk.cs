@@ -1,5 +1,11 @@
-public interface IPerk
+
+namespace LB.Perks
 {
-    int Cost { get; set; }
-    void Enable();
+    public interface IPerk
+    {
+        int Cost { get; set; }
+        void Enable();
+    }
+
 }
+
