@@ -218,7 +218,6 @@ namespace LB.UI
 
             moneyCounter.text = PlayerStats.Singleton.PlayerMoney.ToString();
         }
-
         public void ShowMessage(string message, float time)
         {
             MessageDisplayer.text = message;
@@ -232,11 +231,13 @@ namespace LB.UI
         {
             MessageDisplayer.text = message;
         }
-
         public void ClearMessage() 
         {
             MessageDisplayer.text = string.Empty;
-        } 
+        }
+
+        public void HideCrosshair() => Crosshair.Singleton.HideCrosshair = true;
+        public void ShowCrosshair() => Crosshair.Singleton.HideCrosshair = false;
         #endregion
     }
 

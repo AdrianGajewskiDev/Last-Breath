@@ -2,9 +2,11 @@ using LB.GameMechanics;
 using LB.Health;
 using LB.InputControllers;
 using LB.Perks;
+using LB.Player.Inventory;
 using LB.UI;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 namespace LB.AI
 {
@@ -16,6 +18,7 @@ namespace LB.AI
         private Transform[] allTargets;
         private Transform currentTarget;
         private AudioSource audioSource;
+        private Camera mainCamera;
 
         [SerializeField] private float rateOfFire = 0.5f;
 
@@ -35,12 +38,13 @@ namespace LB.AI
         bool Active = false;
         bool controlledByPlayer = false;
         float deltaTime;
-        float mouseSensitivity = 2f;
+        float mouseSensitivity = 1f;
 
         public int Cost { get => cost; set => cost = value; }
 
         private void Start()
         {
+            mainCamera = Camera.main;
             minigunControlCam.enabled = false;
             audioSource = GetComponent<AudioSource>();
         }
@@ -52,8 +56,17 @@ namespace LB.AI
 
             if(controlledByPlayer == true)
             {
-                Control();
-                return;
+                if(InputController.CancelAction)
+                {
+                    controlledByPlayer = false;
+                    SwitchCameras(false);
+                    EnablePlayer();
+                }
+                else
+                {
+                    Control();
+                    return;
+                }
             }
 
             allTargets = ScanForTargets<ZombieAI>(muzzle, layerMask, Radius, Angle);
@@ -64,11 +77,22 @@ namespace LB.AI
             if(currentTarget != null && !currentTarget.GetComponent<IHealth>().IsDead())
             {
                 RotateToTarget(muzzle, currentTarget, 60f);
-                Shoot();
+                ShootAI();
             }
         }
 
-        void Shoot()
+        private void FixedUpdate()
+        {
+            if(controlledByPlayer)
+            {
+                if(InputController.LeftMouse)
+                {
+                    ShootPlayer();
+                }
+            }
+        }
+
+        void ShootAI()
         {
             if(Time.time >= deltaTime)
             {
@@ -77,6 +101,33 @@ namespace LB.AI
                 muzzleVFX.Play();
                 currentTarget.GetComponent<IHealth>().GiveDamage(2);
             }
+        }
+
+        void ShootPlayer()
+        {
+            if (Time.time >= deltaTime)
+            {
+                deltaTime = Time.time + 1 / rateOfFire;
+                audioSource.PlayOneShot(shootSound);
+                muzzleVFX.Play();
+
+                if (Physics.Raycast(muzzle.transform.position, muzzle.forward, out var hitInfo, 200f))
+                {
+                    if(hitInfo.transform.CompareTag("Zombie"))
+                    {
+                        var health = hitInfo.transform.GetComponent<IHealth>();
+
+                        if(health == null)
+                        {
+                            health = hitInfo.transform.GetComponentInParent<IHealth>();
+                        }
+
+                        if(health != null)
+                            health.GiveDamage(5);
+                    }
+                }
+            }
+          
         }
 
         public Transform CalculateCurrentTarget()
@@ -112,8 +163,8 @@ namespace LB.AI
             float xRot = Input.GetAxis("Mouse X") * mouseSensitivity;
             float yRot = Input.GetAxis("Mouse Y") * mouseSensitivity;
 
-            muzzle.localRotation *= Quaternion.AngleAxis(yRot, Vector3.right)
-                * Quaternion.AngleAxis(xRot, Vector3.up);
+            muzzle.localRotation *= Quaternion.AngleAxis(-yRot, Vector3.right)
+                * Quaternion.AngleAxis(xRot, Vector3.up) * Quaternion.AngleAxis(0, Vector3.forward);
         }
 
 
@@ -126,7 +177,7 @@ namespace LB.AI
                 {
                     UIManager.Singleton.ShowMessage("To exit press [E]", 2f);
                     controlledByPlayer = true;
-                    SwitchCameras(true, false);
+                    SwitchCameras(true);
                     DisablePlayer();
                 }
             }
@@ -142,16 +193,37 @@ namespace LB.AI
             }
         }
 
-        void SwitchCameras(bool miniGunCamEnabled, bool mainCamEnabled)
+        void SwitchCameras(bool mainCamEnabled)
         {
-            minigunControlCam.enabled = miniGunCamEnabled;
-            Camera.main.enabled = mainCamEnabled;
+            if (mainCamEnabled)
+            {
+                minigunControlCam.enabled = true;
+                mainCamera.enabled = false;
+            }
+            else 
+            {
+                mainCamera.enabled = true;
+                minigunControlCam.enabled = false;
+            }
+
         }
 
         void DisablePlayer()
         {
-            GameManager.Singleton.localPlayer.SetActive(false);
+            GameManager.Singleton.localPlayer.GetComponent<FirstPersonController>().enabled = false;
+            mainCamera.gameObject.SetActive(false);
+            UIManager.Singleton.HideCrosshair();
         }
+
+
+        void EnablePlayer() 
+        {
+            GameManager.Singleton.localPlayer.GetComponent<FirstPersonController>().enabled = true;
+            mainCamera.gameObject.SetActive(true);
+            UIManager.Singleton.ShowCrosshair();
+
+        }
+
     }
 }
 
