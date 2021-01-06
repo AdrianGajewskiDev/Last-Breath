@@ -228,6 +228,15 @@ namespace LB.UI
                 MessageDisplayer.text = string.Empty;
             }, time);
         }
+        public void ShowMessage(string message)
+        {
+            MessageDisplayer.text = message;
+        }
+
+        public void ClearMessage() 
+        {
+            MessageDisplayer.text = string.Empty;
+        } 
         #endregion
     }
 

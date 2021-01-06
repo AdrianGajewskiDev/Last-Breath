@@ -123,7 +123,7 @@ namespace UnityStandardAssets.Characters.FirstPerson
                 if (hit.transform.GetComponent<PickUpAble>() != null)
                 {
                     UIManager.Singleton.MessageDisplayer.text = hit.transform.GetComponent<PickUpAble>().GetName();
-                    if(InputController.PickUpItem)
+                    if(InputController.ExecuteAction)
                         hit.transform.GetComponent<PickUpAble>().Execute();
                 }
                 else

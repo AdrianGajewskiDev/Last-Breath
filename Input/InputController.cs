@@ -16,7 +16,7 @@ namespace LB.InputControllers
         public static bool Reload;
         public static bool ShowStats;
         public static bool ShowPauseMenu;
-        public static bool PickUpItem;
+        public static bool ExecuteAction;
         public static bool UseItem;
 
         public static bool ConfirmAction;
@@ -48,7 +48,7 @@ namespace LB.InputControllers
             Reload = Input.GetKeyDown(KeyCode.R);
             ShowStats = Input.GetKeyDown(KeyCode.Tab);
             ShowPauseMenu = Input.GetKeyDown(KeyCode.Escape);
-            PickUpItem = Input.GetKeyDown(KeyCode.F);
+            ExecuteAction = Input.GetKeyDown(KeyCode.F);
             UseItem = Input.GetKeyDown(KeyCode.Q);
             ConfirmAction = Input.GetKeyDown(KeyCode.Return);
             CancelAction = Input.GetKeyDown(KeyCode.E);

@@ -30,6 +30,7 @@ namespace LB.Perks
                     IPerk perk = currentPerkToSpawn.GetComponent<IPerk>();
                     if (perk.Cost <= PlayerStats.Singleton.PlayerMoney)
                     {
+                        PlayerStats.Singleton.DecreasePlayerMoney(perk.Cost);
                         Destroy(currentPerkHologram);
                         perk.Enable();
                         currentPerkToSpawn.SetActive(true);
